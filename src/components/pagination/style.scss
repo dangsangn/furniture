@@ -1,0 +1,26 @@
+@import "./../../style/variable.scss";
+
+.pagination-content {
+  .pagination {
+    display: flex;
+    justify-content: center;
+    li {
+      margin: 12px;
+      a {
+        font-size: 1.8rem;
+        cursor: pointer;
+      }
+    }
+    li.active {
+      a {
+        color: $font-dark;
+        text-decoration: underline;
+      }
+    }
+    li.disabled {
+      a {
+        color: $silver;
+      }
+    }
+  }
+}

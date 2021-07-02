@@ -1,0 +1,73 @@
+@import "./../../style/mixin.scss";
+@import "./../../style/global.scss";
+.feature {
+  @include borderMe();
+  margin-top: 100px;
+  &__item {
+    text-align: center;
+    padding: 40px;
+    position: relative;
+    &__icon {
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      border-left: 0.5px solid $silver;
+      height: 60%;
+      right: 0;
+      @include transform("", "", 50%, -50%);
+      @include for-size(mdC, down) {
+        border: none;
+      }
+    }
+  }
+  .no-boder::after {
+    border: none;
+  }
+}
+
+.category-area {
+  margin-top: 100px;
+  &__clock {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+    @include transition();
+    &:hover .overlay {
+      visibility: visible;
+    }
+    &:hover .category-area__clock__link {
+      top: 50%;
+    }
+
+    &__img {
+      img {
+        height: 100%;
+        width: 100%;
+        vertical-align: middle;
+      }
+    }
+
+    &__link {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      text-align: center;
+      @include transition();
+
+      a {
+        font-size: 2.4rem;
+        color: $white;
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}
