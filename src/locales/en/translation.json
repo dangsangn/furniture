@@ -1,43 +1,56 @@
 {
-    "header_text": {
-        "free": "Free shipping",
-        "order": "Orders From All item"
-    },
-    "language": {
-        "name": "Language",
-        "english": "English",
-        "vietnam": "Vietnamese"
-    },
-    "navigation": {
-      "home": "Home",
-      "shop": "Shop",
-      "aboutUs": "About Us",
-      "contact": "Contact",
-      "blog":"Blog"
-    },
-    "Collection": "Collection",
-    "Blog": "Blog",
-    "Account": "Account",
-    "Register": "Register",
-    "Login": "Login",
-    "Hotline": "Hotline",
-    "carousel": {
-        "name": "Nike new Colection!",
-        "description": "Bringing a new look to the iconic Waffle franchise, the Nike Waffle One balances everything you love most about heritage Nike running with fresh innovations.Its new durable plastic heel clip adds energy, while a mixture of transparent mesh and luscious suedes get you ready for summertime.The new springy midsole features the classic wedge shape while the updated Waffle outsole provides a level of support and traction you have to feel to believe.",
-        "button": "Explore with us"
-    },
-    "feature": {
-        "delivery": "Free Delivery",
-        "policy": "Return Policy",
-        "support": "24/7 Support",
-        "payment":"Secure Payment",
-        "description": "Free Shipping on all order"
-    },
-    "category": {
-        "gotoshop": "Go to Shop"
-    },
-    "button": {
-        "addtocart": "Add to cart",
-        "viewmore": "View more"
-    }
+  "header_text": {
+    "free": "Free shipping",
+    "order": "Orders From All item"
+  },
+  "language": {
+    "name": "Language",
+    "english": "English",
+    "vietnam": "Vietnamese"
+  },
+  "navigation": {
+    "home": "Home",
+    "shop": "Shop",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
+  "Collection": "Collection",
+  "Blog": "Blog",
+  "Account": "Account",
+  "Register": "Register",
+  "Login": "Login",
+  "Hotline": "Hotline",
+  "carousel": {
+    "name": "Nike new Colection!",
+    "description": "Bringing a new look to the iconic Waffle franchise, the Nike Waffle One balances everything you love most about heritage Nike running with fresh innovations.Its new durable plastic heel clip adds energy, while a mixture of transparent mesh and luscious suedes get you ready for summertime.The new springy midsole features the classic wedge shape while the updated Waffle outsole provides a level of support and traction you have to feel to believe.",
+    "button": "Explore with us",
+    "titleProduct1": "Coming Product",
+    "titleProduct2": "Latest Product"
+  },
+  "feature": {
+    "delivery": "Free Delivery",
+    "policy": "Return Policy",
+    "support": "24/7 Support",
+    "payment": "Secure Payment",
+    "description": "Free Shipping on all order"
+  },
+  "category": {
+    "gotoshop": "Go to Shop"
+  },
+  "button": {
+    "addtocart": "Add to cart",
+    "viewmore": "View more",
+    "shopNow": "Shop now"
+  },
+  "countDown": {
+    "title": "Exclusive Hot Deal Ends Soon!",
+    "desc": "Who are in extremely love with eco friendly system."
+  },
+  "productsPage": {
+    "category": "Category",
+    "size": "Size",
+    "color": "Colors",
+    "rating": "Rating"
+  }
 }

@@ -2,7 +2,7 @@ import "./style/styles.scss";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import UserLayout from "./layouts/UserLayout";
 import routersUser from "./routers/userRouter";
-
+import ScrollToTop from "./components/ScrollToTop";
 function App(props) {
   const showRouterUser = (routers) => {
     let result = null;
@@ -24,6 +24,7 @@ function App(props) {
   return (
     <Router>
       <Switch>{showRouterUser(routersUser)}</Switch>
+      <ScrollToTop />
     </Router>
   );
 }

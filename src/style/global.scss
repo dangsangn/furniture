@@ -201,6 +201,18 @@ a:hover {
   }
 }
 
+.btn--primary {
+  padding: 12px 32px;
+  border-radius: 8px;
+  color: $white;
+  font-size: 1.6rem;
+  background: linear-gradient(93deg, $color-primary 0%, $color-primary 100%);
+  text-transform: uppercase;
+  &:hover {
+    color: $white;
+  }
+}
+
 .overlay {
   visibility: hidden;
   position: absolute;
@@ -208,6 +220,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
   background-color: $color-overlay;
   @include transition();
 }

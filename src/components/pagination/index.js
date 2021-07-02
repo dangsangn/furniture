@@ -1,34 +1,43 @@
 import React from "react";
-import ReactPaginate from "react-paginate";
-import { useDispatch, useSelector } from "react-redux";
-import { onChangePage } from "../../actions/control-action";
+import { Pagination } from "antd";
 import "./style.scss";
-function Pagination(props) {
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getPageLimitNumber,
+  getPageNumber,
+} from "../../actions/control-action";
+
+function PaginationContainer(props) {
+  const filters = useSelector((state) => state.filters);
+  const pagination = useSelector((state) => state.pagination);
   const dispatch = useDispatch();
-  const pageNumber = useSelector((state) => state.pagination);
-  const indexPage = useSelector((state) => state.filter._page);
-  const handlePageClick = (e) => {
-    dispatch(onChangePage(e.selected + 1));
-  };
+
+  function onShowSizeChange(current, pageSize) {
+    dispatch(getPageLimitNumber({ page: current, limit: pageSize }));
+  }
+
+  function onChange(pageNumber) {
+    dispatch(getPageNumber(pageNumber));
+    window.scrollTo({
+      top: 100,
+      left: 100,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <div className="pagination-content">
-      <ReactPaginate
-        initialPage={0}
-        forcePage={indexPage - 1}
-        previousLabel={"< Previous"}
-        nextLabel={"Next >"}
-        breakLabel={"..."}
-        breakClassName={"break-me"}
-        pageCount={pageNumber}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
+      <Pagination
+        showSizeChanger
+        onShowSizeChange={onShowSizeChange}
+        current={filters._page}
+        total={pagination.totalPages}
+        pageSizeOptions={["6", "9", "12"]}
+        pageSize={filters._limit}
+        onChange={onChange}
       />
     </div>
   );
 }
 
-export default Pagination;
+export default PaginationContainer;

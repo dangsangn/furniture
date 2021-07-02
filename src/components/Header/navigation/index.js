@@ -12,7 +12,7 @@ function Navigation(props) {
       exact: true,
     },
     {
-      to: "/store",
+      to: "/products",
       label: "navigation.shop",
       exact: false,
     },
@@ -61,7 +61,7 @@ function Navigation(props) {
       </div>
 
       <Button className="navigation__btn-menu" onClick={showDrawer}>
-        <i class="fas fa-hamburger"></i>
+        <i className="fas fa-hamburger"></i>
       </Button>
       <Drawer
         title="Menu"
