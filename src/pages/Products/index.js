@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,26 +12,44 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../actions/product";
 import ProductList from "../../components/ProductList";
 import PaginationContainer from "../../components/Pagination";
-import { getPageLimitNumber, sortProduct } from "../../actions/control-action";
+import {
+  clearFilters,
+  getPageLimitNumber,
+  sortProduct,
+} from "../../actions/control-action";
 import { useTranslation } from "react-i18next";
+import { Button } from "antd";
 
 function Products(props) {
   const { Option } = Select;
   const { t } = useTranslation();
   const filters = useSelector((state) => state.filters);
+  const hasFilter = filters.hasFilter;
   const listProduct = useSelector((state) => state.products.listProduct);
+  const [onSort, setOnsort] = useState("Sort Default");
+  const [onPage, setOnPage] = useState("Show 6");
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductList(filters));
-  }, [dispatch, filters]);
+    if (hasFilter) {
+      setOnsort("Sort Default");
+      dispatch(getPageLimitNumber({ limit: 6 }));
+    }
+  }, [dispatch, filters, hasFilter]);
 
   function onChangeSort(value) {
     dispatch(sortProduct(value.split(" ")));
+    setOnsort(value);
   }
 
   function onChangeTotalItem(value) {
     dispatch(getPageLimitNumber({ limit: +value }));
+    setOnPage(value);
+  }
+
+  function handleClearFilter() {
+    dispatch(clearFilters());
   }
 
   return (
@@ -68,29 +86,41 @@ function Products(props) {
           </Col>
           <Col xl={9} sm={12}>
             <div className="products-page__filter products-page__filter--header">
-              <Select
-                showSearch
-                style={{ width: 200 }}
-                placeholder="Default sorting"
-                defaultValue="Sort Default"
-                optionFilterProp="children"
-                onChange={onChangeSort}
-              >
-                <Option value="">Sort Default</Option>
-                <Option value="price desc">Sort Decrease</Option>
-                <Option value="price asc">Sort Increase</Option>
-              </Select>
-              <Select
-                showSearch
-                style={{ width: 200 }}
-                defaultValue="Show 6"
-                optionFilterProp="children"
-                onChange={onChangeTotalItem}
-              >
-                <Option value="6">Show 6</Option>
-                <Option value="9">Show 9</Option>
-                <Option value="12">Show 12</Option>
-              </Select>
+              <div>
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Default sorting"
+                  defaultValue={onSort}
+                  value={onSort}
+                  optionFilterProp="children"
+                  onChange={onChangeSort}
+                >
+                  <Option value="">Sort Default</Option>
+                  <Option value="price desc">Sort Decrease</Option>
+                  <Option value="price asc">Sort Increase</Option>
+                </Select>
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  defaultValue={onPage}
+                  value={filters._limit}
+                  optionFilterProp="children"
+                  onChange={onChangeTotalItem}
+                >
+                  <Option value={6}>Show 6</Option>
+                  <Option value={9}>Show 9</Option>
+                  <Option value={12}>Show 12</Option>
+                </Select>
+              </div>
+              {!hasFilter &&
+                (Object.keys(filters).length > 3 ||
+                  filters._page !== 1 ||
+                  filters._limit !== 6) && (
+                  <Button onClick={handleClearFilter}>
+                    <i className="fas fa-broom"></i> Clear filters
+                  </Button>
+                )}
             </div>
             <div className="products-page__list">
               <ProductList data={listProduct} xl={4} />

@@ -4,7 +4,6 @@
 .products-page {
   &__size {
     padding: 12px;
-
     &__item {
       display: inline-block;
       margin: 0 12px 12px 0;
@@ -18,7 +17,6 @@
         background-color: $color-primary;
       }
     }
-
     .active-size {
       background-color: $color-primary;
     }

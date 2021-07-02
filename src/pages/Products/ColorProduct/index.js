@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import "./style.scss";
 
 function ColorProduct(props) {
   const data = ["red", "black", "white", "silver"];
+  const hasFilter = useSelector((state) => state.filters.hasFilter);
   const [colorItem, setColorItem] = useState({
     name: "",
     isActive: false,
@@ -13,6 +16,10 @@ function ColorProduct(props) {
       isActive: true,
     });
   };
+
+  useEffect(() => {
+    hasFilter && setColorItem({ name: "", isActive: false });
+  }, [hasFilter]);
 
   const showColor = (data) => {
     return data.map((item, index) => {

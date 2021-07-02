@@ -20,7 +20,23 @@ const showProduct = (data, xl) => {
 function ProductList(props) {
   const showLoading = useSelector((state) => state.ui.showLoading);
   const { data, xl } = props;
-  return <>{showLoading ? <Loading /> : <Row>{showProduct(data, xl)}</Row>} </>;
+  return (
+    <>
+      {showLoading ? (
+        <Loading />
+      ) : (
+        <Row>
+          {data.length === 0 ? (
+            <Col>
+              <p className="text-center">No product</p>
+            </Col>
+          ) : (
+            showProduct(data, xl)
+          )}
+        </Row>
+      )}
+    </>
+  );
 }
 
 export default ProductList;

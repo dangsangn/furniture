@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getRatingProduct } from "../../../actions/control-action";
 import ShowStar from "./../../../components/ShowStar";
 import "./style.scss";
 
 function RatingProduct(props) {
   const dispatch = useDispatch();
+  const hasFilter = useSelector((state) => state.filters.hasFilter);
   const data = [1, 2, 3, 4, 5];
   const [ratingItem, setRatingItem] = useState({
     name: "",
@@ -19,6 +21,10 @@ function RatingProduct(props) {
       isActive: true,
     });
   };
+
+  useEffect(() => {
+    hasFilter && setRatingItem({ name: "", isActive: false });
+  }, [hasFilter]);
 
   const showRating = (data) => {
     return data.map((item, index) => {
