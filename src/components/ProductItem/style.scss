@@ -1,0 +1,34 @@
+@import "./../../style/mixin.scss";
+@import "./../../style/variable.scss";
+
+.product-item {
+  @include borderMeLess();
+  &:hover {
+    @include borderMe();
+  }
+  &__img img {
+    width: 100%;
+    height: 250px;
+  }
+  &__content {
+    padding: 12px;
+    h3 {
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    &__stars {
+      color: $color-star;
+    }
+    &__price {
+      span {
+        font-weight: bold;
+        margin-right: 12px;
+      }
+      del {
+        color: $silver;
+        font-style: italic;
+      }
+    }
+  }
+}
