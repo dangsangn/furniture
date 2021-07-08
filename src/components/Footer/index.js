@@ -17,10 +17,10 @@ function Footer(props) {
   ];
 
   let socialIcon = [
-    <i class="fab fa-facebook-f"></i>,
-    <i class="fab fa-twitter"></i>,
-    <i class="fab fa-youtube"></i>,
-    <i class="fab fa-behance"></i>,
+    <i className="fab fa-facebook-f"></i>,
+    <i className="fab fa-twitter"></i>,
+    <i className="fab fa-youtube"></i>,
+    <i className="fab fa-behance"></i>,
   ];
 
   return (
@@ -40,7 +40,7 @@ function Footer(props) {
             <div className="footer__item">
               <h2>Newsletter</h2>
               <p>Stay update with our latest</p>
-              <div class="input-group mb-3 footer__search">
+              <div className="input-group mb-3 footer__search">
                 <input
                   type="text"
                   className="form-control"
@@ -48,7 +48,7 @@ function Footer(props) {
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
                 />
-                <div class="input-group-append footer__search-btn">
+                <div className="input-group-append footer__search-btn">
                   <span className="input-group-text" id="basic-addon2">
                     <i className="fas fa-arrow-right"></i>
                   </span>
@@ -89,7 +89,7 @@ function Footer(props) {
         <div className="footer__copyright ">
           <p className="text-center">
             Copyright ©2021 All rights reserved | This template is made with{" "}
-            <i class="far fa-heart"></i>by <a href="#1">Colorlib</a>
+            <i className="far fa-heart"></i>by <a href="#1">Colorlib</a>
           </p>
         </div>
       </Container>

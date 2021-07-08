@@ -26,6 +26,7 @@
     width: 100%;
     text-align: center;
     @include transition();
+    z-index: 3;
 
     a {
       font-size: 2.4rem;

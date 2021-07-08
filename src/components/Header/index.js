@@ -4,6 +4,7 @@ import { Select } from "antd";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import Container from "react-bootstrap/Container";
+import { Link } from "react-router-dom";
 import "./style.scss";
 
 function Header(props) {
@@ -46,13 +47,13 @@ function Header(props) {
             </div>
           </div>
           <div className="header__main d-flex justify-content-space-between align-items-center">
-            <div className="header__logo">
+            <Link to="/" className="header__logo">
               <img src="../assets/images/logo.webp" alt="logoHeader" />
-            </div>
+            </Link>
             <div className="header_nav d-flex align-items-center ">
               <Navigation />
               <a href="#1" className="header__cart">
-                <i class="fas fa-shopping-cart"></i>
+                <i className="fas fa-shopping-cart"></i>
               </a>
               <button
                 className="btn btn-primary btn--search-header"
