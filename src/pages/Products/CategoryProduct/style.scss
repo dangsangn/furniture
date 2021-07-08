@@ -3,7 +3,6 @@
 .products-page {
   &__category {
     padding: 12px;
-
     &__item {
       font-size: 1.6rem;
       padding: 6px;
@@ -14,7 +13,6 @@
         color: $color-primary;
       }
     }
-
     .active {
       color: $color-primary;
     }

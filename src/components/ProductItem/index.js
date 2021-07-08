@@ -18,7 +18,7 @@ function ProductItem(props) {
       <div className="product-item__content">
         <h3>{data?.name}</h3>
         <div>
-          <ShowStar stars={3.5} />
+          <ShowStar stars={data.stars} />
           <p className="product-item__content__price">
             <span>
               {formatter.format(

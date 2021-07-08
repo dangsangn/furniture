@@ -7,6 +7,7 @@ import {
   GET_SIZE_PRODUCT,
   GET_COLOR_PRODUCT,
   GET_RATING_PRODUCT,
+  CLEAR_FILTERS,
 } from "../constants/control-action";
 
 export const getTotalItem = (data) => {
@@ -62,5 +63,11 @@ export const getRatingProduct = (data) => {
   return {
     type: GET_RATING_PRODUCT,
     payload: { data },
+  };
+};
+
+export const clearFilters = () => {
+  return {
+    type: CLEAR_FILTERS,
   };
 };

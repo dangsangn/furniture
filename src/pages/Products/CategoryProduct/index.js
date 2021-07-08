@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../../actions/category";
 import { getProductByCategory } from "../../../actions/control-action";
+import { useHistory } from "react-router-dom";
 import "./style.scss";
 
 function CategoryProduct(props) {
+  const history = useHistory();
+  let id = useRef(history.location.search.slice(1));
   const category = useSelector((state) => state.category);
+  const hasFilter = useSelector((state) => state.filters.hasFilter);
   const dispatch = useDispatch();
   const [categoryItem, setCategoryItem] = useState({
     name: "",
@@ -14,14 +18,25 @@ function CategoryProduct(props) {
 
   useEffect(() => {
     dispatch(getCategory());
-  }, [dispatch]);
+    if (hasFilter) {
+      setCategoryItem({ id: "", isActive: false });
+      id.current = null;
+      history.push("/products");
+    }
+    if (id.current) {
+      dispatch(getProductByCategory(id.current));
+      setCategoryItem({ id: id.current, isActive: true });
+    }
+  }, [dispatch, hasFilter, id, history]);
 
   const handleCheckCategory = (value) => {
     dispatch(getProductByCategory(value.id));
     setCategoryItem({
-      name: value.name,
+      id: value.id,
       isActive: true,
     });
+    id.current = value.id;
+    history.push("/products?" + value.id);
   };
 
   const showCategory = (data) => {
@@ -31,7 +46,7 @@ function CategoryProduct(props) {
           key={item.id}
           onClick={() => handleCheckCategory(item)}
           className={
-            categoryItem.isActive && categoryItem.name === item.name
+            categoryItem.isActive && categoryItem.id === item.id
               ? "active products-page__category__item"
               : "products-page__category__item"
           }

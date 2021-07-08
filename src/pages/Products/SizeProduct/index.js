@@ -1,18 +1,28 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getSizeProduct } from "../../../actions/control-action";
 import "./style.scss";
 
 function SizeProduct(props) {
   const data = [38, 39, 40, 41];
+  const dispatch = useDispatch();
+  const hasFilter = useSelector((state) => state.filters.hasFilter);
   const [sizeItem, setSizeItem] = useState({
     name: "",
     isActive: false,
   });
   const handleCheckSize = (value) => {
+    dispatch(getSizeProduct(value));
     setSizeItem({
       name: value,
       isActive: true,
     });
   };
+
+  useEffect(() => {
+    hasFilter && setSizeItem({ name: "", isActive: false });
+  }, [hasFilter]);
 
   const showSize = (data) => {
     return data.map((item, index) => {
