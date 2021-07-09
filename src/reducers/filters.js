@@ -1,5 +1,6 @@
 import {
   CLEAR_FILTERS,
+  GET_COLOR_PRODUCT,
   GET_PAGE_LIMIT_NUMBER,
   GET_PAGE_NUMBER,
   GET_PRODUCT_BY_CATEGORY,
@@ -51,6 +52,13 @@ const myReducer = (state = initialValue, action) => {
       return {
         ...state,
         size_like: action.payload.data,
+        _page: 1,
+        hasFilter: false,
+      };
+    case GET_COLOR_PRODUCT:
+      return {
+        ...state,
+        color_like: action.payload.data,
         _page: 1,
         hasFilter: false,
       };

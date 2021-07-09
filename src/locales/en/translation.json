@@ -41,7 +41,9 @@
   "button": {
     "addtocart": "Add to cart",
     "viewmore": "View more",
-    "shopNow": "Shop now"
+    "shopNow": "Shop now",
+    "submit": "Submit",
+    "guide": "Guide how to choose shoe size"
   },
   "countDown": {
     "title": "Exclusive Hot Deal Ends Soon!",
@@ -52,5 +54,15 @@
     "size": "Size",
     "color": "Colors",
     "rating": "Rating"
+  },
+  "detailProduct": {
+    "addReview": "Add a review",
+    "color": "Color"
+  },
+  "productDetail": {
+    "size": "Size",
+    "review": "Reviewes",
+    "yourRating": "Your rating",
+    "quantity": "Quantity"
   }
 }

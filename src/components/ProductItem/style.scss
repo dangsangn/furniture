@@ -2,6 +2,7 @@
 @import "./../../style/variable.scss";
 
 .product-item {
+  display: block;
   @include borderMeLess();
   height: calc(100% - 24px);
   margin-bottom: 24px;
@@ -36,6 +37,7 @@
       span {
         font-weight: bold;
         margin-right: 12px;
+        color: $font-dark;
       }
       del {
         color: $silver;
