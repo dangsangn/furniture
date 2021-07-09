@@ -5,7 +5,7 @@ import { getSizeProduct } from "../../../actions/control-action";
 import "./style.scss";
 
 function SizeProduct(props) {
-  const data = [38, 39, 40, 41];
+  const data = [38, 39, 40, 41, 42];
   const dispatch = useDispatch();
   const hasFilter = useSelector((state) => state.filters.hasFilter);
   const [sizeItem, setSizeItem] = useState({

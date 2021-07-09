@@ -27,7 +27,7 @@ function CategoryProduct(props) {
       dispatch(getProductByCategory(id.current));
       setCategoryItem({ id: id.current, isActive: true });
     }
-  }, [dispatch, hasFilter, id, history]);
+  }, [dispatch, hasFilter, history]);
 
   const handleCheckCategory = (value) => {
     dispatch(getProductByCategory(value.id));
@@ -35,6 +35,7 @@ function CategoryProduct(props) {
       id: value.id,
       isActive: true,
     });
+
     id.current = value.id;
     history.push("/products?" + value.id);
   };

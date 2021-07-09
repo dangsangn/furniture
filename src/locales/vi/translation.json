@@ -42,7 +42,9 @@
   "button": {
     "addtocart": "Thêm vào giỏ",
     "viewmore": "Xem chi tiết",
-    "shopNow": "mua sắm ngay bây giờ "
+    "shopNow": "mua sắm ngay bây giờ ",
+    "submit": "Xác nhận",
+    "guide": "HD cách chọn size giày"
   },
   "countDown": {
     "title": "Ưu đãi độc quyền sẽ sớm kết thúc!",
@@ -53,5 +55,15 @@
     "size": "Kích cỡ",
     "color": "Màu sắc",
     "rating": "Đánh giá"
+  },
+  "detailProduct": {
+    "addReview": "Thêm một bài đánh giá",
+    "color": "Màu sắc"
+  },
+  "productDetail": {
+    "size": "Kích thước",
+    "review": "Những đánh giá",
+    "yourRating": "Đánh giá của bạn",
+    "quantity": "Số lượng"
   }
 }

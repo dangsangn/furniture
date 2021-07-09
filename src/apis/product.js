@@ -14,3 +14,8 @@ export const fetchProducts = (params) => {
   const url = `/products?${params}`;
   return authGet(url);
 };
+
+export const fetchProductDeatil = (id) => {
+  const url = `/products/${id}`;
+  return authGet(url);
+};

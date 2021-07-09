@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getColorProduct } from "../../../actions/control-action";
 import "./style.scss";
 
 function ColorProduct(props) {
-  const data = ["red", "black", "white", "silver"];
+  const data = ["red", "black", "white", "gray"];
   const hasFilter = useSelector((state) => state.filters.hasFilter);
+  const dispatch = useDispatch();
   const [colorItem, setColorItem] = useState({
     name: "",
     isActive: false,
@@ -15,6 +17,7 @@ function ColorProduct(props) {
       name: value,
       isActive: true,
     });
+    dispatch(getColorProduct(value));
   };
 
   useEffect(() => {

@@ -1,18 +1,21 @@
 import queryString from "query-string";
 import { call, put, takeEvery } from "redux-saga/effects";
 import { getTotalItem } from "../actions/control-action";
+import { hideLoading, showLoading } from "../actions/ui";
 import {
+  getProductDetailSuccess,
   getProductListComingSuccess,
   getProductListLatesSuccess,
   getProductListSuccess,
 } from "../actions/product";
-import { hideLoading, showLoading } from "../actions/ui";
 import {
   fetchProductComing,
+  fetchProductDeatil,
   fetchProductLatest,
   fetchProducts,
 } from "../apis/product";
 import {
+  GET_PRODUCT_DETAIL,
   GET_PRODUCT_LIST,
   GET_PRODUCT_LIST_COMING,
   GET_PRODUCT_LIST_LATEST,
@@ -54,10 +57,21 @@ function* getProductListSaga({ payload }) {
   yield put(hideLoading());
 }
 
+function* getProductDetailSaga({ payload }) {
+  const id = payload.data;
+  try {
+    const res = yield call(fetchProductDeatil, id);
+    yield put(getProductDetailSuccess(res.data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* productsSaga() {
   yield takeEvery(GET_PRODUCT_LIST_LATEST, getProductLatestSaga);
   yield takeEvery(GET_PRODUCT_LIST_COMING, getProductComingSaga);
   yield takeEvery(GET_PRODUCT_LIST, getProductListSaga);
+  yield takeEvery(GET_PRODUCT_DETAIL, getProductDetailSaga);
 }
 
 export default productsSaga;

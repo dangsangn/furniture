@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 import UserLayout from "./layouts/UserLayout";
 import routersUser from "./routers/userRouter";
 import ScrollToTop from "./components/ScrollToTop";
+import { ToastContainer } from "react-toastify";
 function App(props) {
   const showRouterUser = (routers) => {
     let result = null;
@@ -25,6 +26,7 @@ function App(props) {
     <Router>
       <Switch>{showRouterUser(routersUser)}</Switch>
       <ScrollToTop />
+      <ToastContainer />
     </Router>
   );
 }
