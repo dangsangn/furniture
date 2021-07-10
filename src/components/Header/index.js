@@ -4,12 +4,37 @@ import { Select } from "antd";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import Container from "react-bootstrap/Container";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./style.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { Menu, Dropdown, Button, Avatar } from "antd";
+import history from "../../untils/history";
+import { userLogout } from "../../actions/user";
 
 function Header(props) {
   const { Option } = Select;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authentication_token");
+    dispatch(userLogout());
+    history.push("/");
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key={1}>
+        <Link to={"/"} rel="noopener noreferrer">
+          {t("header.profile")}
+        </Link>
+      </Menu.Item>
+      <Menu.Item key={2}>
+        <span onClick={handleLogout}>{t("header.logout")}</span>
+      </Menu.Item>
+    </Menu>
+  );
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -42,8 +67,34 @@ function Header(props) {
               </Select>
             </div>
             <div className="header__top__sigup">
-              <a href="#1">{t("Login")}</a>
-              <a href="#1">{t("Register")}</a>
+              {user.isLogin ? (
+                <Dropdown
+                  className="header__top__avatar"
+                  overlay={menu}
+                  placement="bottomCenter"
+                  arrow
+                >
+                  <Button>
+                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    {user?.email}
+                  </Button>
+                </Dropdown>
+              ) : (
+                <>
+                  <NavLink
+                    activeClassName="header__navlink-active"
+                    to={"/login"}
+                  >
+                    {t("Login")}
+                  </NavLink>
+                  <NavLink
+                    activeClassName="header__navlink-active"
+                    to={"/register"}
+                  >
+                    {t("Register")}
+                  </NavLink>
+                </>
+              )}
             </div>
           </div>
           <div className="header__main d-flex justify-content-space-between align-items-center">

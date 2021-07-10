@@ -62,8 +62,37 @@
   },
   "productDetail": {
     "size": "Kích thước",
-    "review": "Những đánh giá",
+    "review": "Nội dung",
     "yourRating": "Đánh giá của bạn",
     "quantity": "Số lượng"
+  },
+  "form": {
+    "usernameRequired": "Vui lòng nhập tên người dùng của bạn!",
+    "passwordRequired": "Vui lòng nhập mật khẩu của bạn!"
+  },
+  "register": {
+    "title": "TẠO TÀI KHOẢN MỚI",
+    "agreement1": "Tôi đã đọc",
+    "agreement2": "hợp đồng",
+    "register": "Đăng ký",
+    "loginBtn": "ĐĂNG NHẬP BÂY GIỜ",
+    "titleImg": "Mới vào trang web của chúng tôi?",
+    "DescImg": "Có những tiến bộ trong khoa học và công nghệ hàng ngày và một ví dụ điển hình về điều này là",
+    "email": "E-mail",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "gender": "Giới tính"
+  },
+  "login": {
+    "btnLogin": "Tạo một tài khoản",
+    "title": "ĐĂNG NHẬP ĐỂ VÀO",
+    "rememberMe": "Nhớ tôi",
+    "submit": "Đăng nhập"
+  },
+  "header": {
+    "profile": "Hồ sơ",
+    "logout": "Đăng xuất"
   }
 }

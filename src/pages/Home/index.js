@@ -1,26 +1,27 @@
 import React, { useEffect } from "react";
-import Slider from "./Slider";
+import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Categories from "../../components/Categories";
-import "./style.scss";
 import { useTranslation } from "react-i18next";
-import ImgClock from "./../../assets/images/banner/clock.webp";
-import ProductList from "../../components/ProductList";
-import CountdownTime from "./Countdown";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import "swiper/components/navigation/navigation.min.css";
+import "swiper/components/pagination/pagination.min.css";
+import SwiperCore, { Navigation, Pagination } from "swiper/core";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
-import "swiper/components/pagination/pagination.min.css";
-import "swiper/components/navigation/navigation.min.css";
-import SwiperCore, { Pagination, Navigation } from "swiper/core";
-import { featuteData, listBrandImage } from "../../data";
-import { useDispatch, useSelector } from "react-redux";
+import { getCategory } from "../../actions/category";
 import {
   getProductListComing,
   getProductListLates,
 } from "../../actions/product";
-import { getCategory } from "../../actions/category";
+import Categories from "../../components/Categories";
+import ProductList from "../../components/ProductList";
+import { featuteData, listBrandImage } from "../../data";
+import ImgClock from "./../../assets/images/banner/clock.webp";
+import CountdownTime from "./Countdown";
+import Slider from "./Slider";
+import "./style.scss";
 SwiperCore.use([Pagination, Navigation]);
 
 function HomePage(props) {
@@ -67,7 +68,7 @@ function HomePage(props) {
                   <img src={ImgClock} alt="imgClock" />
                 </div>
                 <div className="category-area__clock__link">
-                  <a href="#1">{t("category.gotoshop")}</a>
+                  <Link to="/products">{t("category.gotoshop")}</Link>
                 </div>
               </div>
             </Col>
@@ -122,9 +123,9 @@ function HomePage(props) {
                   <h2>{t("countDown.title")}</h2>
                   <p>{t("countDown.desc")}</p>
                   <CountdownTime />
-                  <a href="#1" className="btn btn--primary">
+                  <Link to="/products" className="btn btn--primary">
                     {t("button.shopNow")}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </Col>

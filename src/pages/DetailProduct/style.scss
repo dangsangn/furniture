@@ -60,9 +60,23 @@
     width: 100px;
     font-size: 1.6rem;
     font-weight: bold;
+    margin-bottom: 12px;
     border-color: $silver;
     border-radius: 4px;
     outline: none;
+  }
+
+  &__container-guide-shoe {
+    display: flex;
+    justify-content: space-between;
+    @include for-size(mdC, down) {
+      flex-direction: column;
+    }
+    .btn--guide-shoe {
+      i {
+        margin-left: 4px;
+      }
+    }
   }
 
   .form-group {
@@ -84,7 +98,6 @@
     }
     .ant-card-body {
       padding: 12px;
-      width: 50%;
     }
     .ant-card-bordered {
       border: none;
@@ -94,6 +107,11 @@
       .ant-form-item-label {
         label {
           float: left;
+        }
+      }
+      .ant-form-item-control {
+        @include for-size(mdC, down) {
+          margin: auto;
         }
       }
     }

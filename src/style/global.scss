@@ -210,13 +210,30 @@ a:hover {
 
 .btn--primary {
   padding: 12px 32px;
-  border-radius: 8px;
   color: $white;
   font-size: 1.6rem;
-  background: linear-gradient(93deg, $color-primary 0%, $color-primary 100%);
+  background: linear-gradient(93deg, $color-second 0%, $color-primary 100%) !important;
   text-transform: uppercase;
-  &:hover {
-    color: $white;
+  border: none !important;
+  position: relative;
+  overflow: hidden;
+  &:after {
+    content: "";
+    position: absolute;
+    background-color: $color-overlay;
+    transform: translateX(-100%);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    clip-path: polygon(6% 0, 100% 1%, 93% 100%, 0% 100%);
+    z-index: 2;
+    opacity: 0;
+    @include transition();
+  }
+  &:hover:after {
+    opacity: 0.5;
+    transform: translateX(100%);
   }
 }
 

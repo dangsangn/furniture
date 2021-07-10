@@ -134,7 +134,7 @@ function DetailProduct(props) {
                 </div>
                 <div className="form-group">
                   <h3>{t("productDetail.quantity")} </h3>
-                  <div className="d-flex justify-content-space-between">
+                  <div className="detail-product__container-guide-shoe">
                     <input
                       min={1}
                       max={10}
@@ -143,7 +143,7 @@ function DetailProduct(props) {
                       onChange={(e) => setQuantity(e.target.value)}
                       name="quantity"
                     />
-                    <Button onClick={showModal}>
+                    <Button onClick={showModal} className="btn--guide-shoe">
                       {t("button.guide")}
                       <i className="fas fa-external-link-alt"></i>
                     </Button>
