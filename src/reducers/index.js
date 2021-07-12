@@ -6,6 +6,8 @@ import filters from "./filters";
 import pagination from "./pagination";
 import productDetail from "./product-detail";
 import user from "./user";
+import cart from "./cart";
+
 const rootReducer = combineReducers({
   products,
   ui,
@@ -14,6 +16,7 @@ const rootReducer = combineReducers({
   pagination,
   productDetail,
   user,
+  cart,
 });
 
 export default rootReducer;

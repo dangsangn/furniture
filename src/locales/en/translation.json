@@ -93,5 +93,26 @@
   "header": {
     "profile": "Profile",
     "logout": "Logout"
+  },
+  "cartPage": {
+    "color": "Color:",
+    "size": "Size:",
+    "messageDeleteProduct": "Are you sure to delete this product?",
+    "titleOrder": "Your Order",
+    "product": "Product",
+    "total": "Total",
+    "subTotal": "Subtotal",
+    "shipping": "Shipping fee",
+    "paymentRequired": "Please input choose payment type",
+    "paymentRequiredInput": "Please input your number card",
+    "buttonSummit": "Complete order",
+    "chekbox1": "Payment on delivery",
+    "chekbox2": "Payment by card",
+    "price": "Price",
+    "quantity": "Quantity",
+    "action": "Action"
+  },
+  "productSeen": {
+    "title": "Viewed products"
   }
 }

@@ -6,6 +6,7 @@ import ProductsPage from "./../pages/Products";
 import DetailProduct from "./../pages/DetailProduct";
 import Login from "./../pages/Login";
 import Register from "./../pages/Register";
+import Cart from "./../pages/Cart";
 
 const routers = [
   {
@@ -32,6 +33,11 @@ const routers = [
     path: "/register",
     exact: true,
     main: <Register />,
+  },
+  {
+    path: "/cart",
+    exact: true,
+    main: <Cart />,
   },
 ];
 

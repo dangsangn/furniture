@@ -19,6 +19,7 @@ import {
 } from "../../actions/control-action";
 import { useTranslation } from "react-i18next";
 import { Button } from "antd";
+import ProductSeen from "../../components/ProductSeen";
 
 function Products(props) {
   const { Option } = Select;
@@ -126,6 +127,11 @@ function Products(props) {
               <ProductList data={listProduct} xl={4} />
             </div>
             <PaginationContainer />
+          </Col>
+        </Row>
+        <Row>
+          <Col xl={12} sm={12}>
+            <ProductSeen />
           </Col>
         </Row>
       </Container>

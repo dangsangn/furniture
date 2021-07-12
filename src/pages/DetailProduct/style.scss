@@ -54,18 +54,6 @@
     color: $white;
   }
 
-  input[name="quantity"] {
-    text-align: center;
-    height: 32px;
-    width: 100px;
-    font-size: 1.6rem;
-    font-weight: bold;
-    margin-bottom: 12px;
-    border-color: $silver;
-    border-radius: 4px;
-    outline: none;
-  }
-
   &__container-guide-shoe {
     display: flex;
     justify-content: space-between;
