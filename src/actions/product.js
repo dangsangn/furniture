@@ -1,4 +1,9 @@
 import {
+  GET_KEY_SEARCH,
+  GET_PRODUCT_BY_KEY_SEARCH_SUCCESS,
+} from "../constants/control-action";
+import {
+  GET_ID_PRODUCT,
   GET_PRODUCT_DETAIL,
   GET_PRODUCT_DETAIL_SUCCESS,
   GET_PRODUCT_LIST,
@@ -59,6 +64,27 @@ export const getProductDetail = (id) => {
 export const getProductDetailSuccess = (data) => {
   return {
     type: GET_PRODUCT_DETAIL_SUCCESS,
+    payload: { data },
+  };
+};
+
+export const getIdProduct = (id) => {
+  return {
+    type: GET_ID_PRODUCT,
+    payload: { data: id },
+  };
+};
+
+export const getKeySearch = (data) => {
+  return {
+    type: GET_KEY_SEARCH,
+    payload: { data },
+  };
+};
+
+export const getProductByKeySearchSuccess = (data) => {
+  return {
+    type: GET_PRODUCT_BY_KEY_SEARCH_SUCCESS,
     payload: { data },
   };
 };

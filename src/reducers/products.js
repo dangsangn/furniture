@@ -1,3 +1,4 @@
+import { GET_PRODUCT_BY_KEY_SEARCH_SUCCESS } from "../constants/control-action";
 import {
   GET_PRODUCT_LIST_COMING_SUCCESS,
   GET_PRODUCT_LIST_LATEST_SUCCESS,
@@ -8,6 +9,7 @@ let initialValue = {
   listProduct: [],
   listProductLatest: [],
   listProductComing: [],
+  listProductBySearch: [],
 };
 
 const myReducer = (state = initialValue, action) => {
@@ -18,6 +20,8 @@ const myReducer = (state = initialValue, action) => {
       return { ...state, listProductLatest: action.payload.data.data };
     case GET_PRODUCT_LIST_COMING_SUCCESS:
       return { ...state, listProductComing: action.payload.data.data };
+    case GET_PRODUCT_BY_KEY_SEARCH_SUCCESS:
+      return { ...state, listProductBySearch: action.payload.data };
     default:
       return state;
   }

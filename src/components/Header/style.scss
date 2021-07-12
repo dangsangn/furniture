@@ -9,6 +9,9 @@
   z-index: 99;
   background-color: $white;
   @include borderMe();
+  @include for-size(mdC, down) {
+    padding: 12px 0;
+  }
 
   &__top {
     display: flex;
@@ -16,7 +19,7 @@
     padding-bottom: 12px;
     border-bottom: 1px solid $silver;
     @include for-size(mdC, down) {
-      justify-content: center;
+      justify-content: space-between;
     }
     &__sigup {
       a {
@@ -26,6 +29,9 @@
         &:hover {
           color: $color-primary;
         }
+      }
+      .ant-avatar-image {
+        margin-right: 8px;
       }
     }
     &__avatar {

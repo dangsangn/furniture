@@ -1,20 +1,19 @@
-import { Avatar, Button, Card, InputNumber, message, Modal } from "antd";
+import { Button, InputNumber, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { getProductDetail } from "../../actions/product";
 import { addCartItem } from "../../actions/user";
 import ImgSizeShoe from "../../assets/images/size-shoe.jpg";
 import ProductSeen from "../../components/ProductSeen";
-import ShowStar from "../../components/ShowStar";
+import history from "../../untils/history";
 import ImageProduct from "./ImageProduct";
 import PostReview from "./PostReview";
+import ShowReview from "./ShowReview";
 import "./style.scss";
-const { Meta } = Card;
 
 function DetailProduct(props) {
   let formatter = new Intl.NumberFormat("en-US", {
@@ -23,17 +22,17 @@ function DetailProduct(props) {
   });
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
   const productDetail = useSelector((state) => state.productDetail);
   const [, setColor] = useState("");
   const [, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const idProduct = history.location.pathname.slice(10);
 
   useEffect(() => {
-    dispatch(getProductDetail(history.location.pathname.slice(10)));
-  }, [dispatch, history]);
+    dispatch(getProductDetail(idProduct));
+  }, [dispatch, idProduct]);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -74,7 +73,7 @@ function DetailProduct(props) {
         size: +Object.fromEntries(data).size,
       };
       dispatch(addCartItem(sendData));
-      history.push("/cart");
+      message.success("Add product successfully!");
     }
   };
 
@@ -190,24 +189,11 @@ function DetailProduct(props) {
               <Col xl={6} sm={12}>
                 <div className="detail-product__review__show">
                   <h2>{t("productDetail.review")}</h2>
-                  <Card>
-                    <Meta
-                      avatar={
-                        <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                      }
-                      title={
-                        <div>
-                          <h3>Title</h3>
-                          <ShowStar stars={4} />
-                        </div>
-                      }
-                      description="This is the description"
-                    />
-                  </Card>
+                  <ShowReview idProduct={productDetail.id} />
                 </div>
               </Col>
               <Col xl={6} sm={12}>
-                <PostReview />
+                <PostReview idProduct={productDetail.id} />
               </Col>
             </Row>
           </div>
@@ -215,7 +201,9 @@ function DetailProduct(props) {
       </div>
       <Container>
         <Row>
-          <ProductSeen />
+          <Col xl={12} sm={12}>
+            <ProductSeen />
+          </Col>
         </Row>
       </Container>
     </>

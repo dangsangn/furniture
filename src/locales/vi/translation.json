@@ -83,7 +83,10 @@
     "confirmPassword": "Xác nhận mật khẩu",
     "phone": "Số điện thoại",
     "address": "Địa chỉ",
-    "gender": "Giới tính"
+    "gender": "Giới tính",
+    "update": "Cập nhật",
+    "fullName": "Họ và tên",
+    "avatar": "Ảnh đại diện"
   },
   "login": {
     "btnLogin": "Tạo một tài khoản",
@@ -111,9 +114,19 @@
     "price": "Giá bán",
     "quantity": "Số lượng",
     "action": "Hành động",
-    "product": "Sản phẩm"
+    "product": "Sản phẩm",
+    "Address": "Địa chỉ",
+    "phone": "Điện thoại",
+    "typePayment": "Hình thức thanh toán",
+    "dateBuy": "Ngày mua"
   },
   "productSeen": {
     "title": "Các sản phẩm đã xem"
+  },
+  "profilePage": {
+    "title": "Thông tin User"
+  },
+  "reviews": {
+    "emptyReview": "Không có đánh giá"
   }
 }

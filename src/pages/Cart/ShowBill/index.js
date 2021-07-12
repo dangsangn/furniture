@@ -1,0 +1,45 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+function ShowBill(props) {
+  const { t } = useTranslation();
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "VND",
+  });
+  const { listOrder, totalMoneyListOrder } = props;
+  return (
+    <>
+      <li className="cart-page__order__list__item">
+        <span>{t("cartPage.product")}</span>
+        <span>{t("cartPage.total")}</span>
+      </li>
+      <div className="cart-page__order__list__container">
+        {listOrder.map((item, index) => (
+          <li className="cart-page__order__list__item" key={index}>
+            <span>{item?.product.name} </span>
+            <span>x {item?.quantity.quantity}</span>
+            <span>{formatter.format(item?.total)}</span>
+          </li>
+        ))}
+      </div>
+      <li className="cart-page__order__list__item">
+        <span className="color-dark">{t("cartPage.subTotal")} </span>
+        <span className="color-dark">
+          {formatter.format(totalMoneyListOrder)}
+        </span>
+      </li>
+      <li className="cart-page__order__list__item">
+        <span className="color-dark">{t("cartPage.shipping")} </span>
+        <span className="color-dark">{formatter.format(0)}</span>
+      </li>
+      <li className="cart-page__order__list__item">
+        <span className="color-dark">{t("cartPage.total")} </span>
+        <span className="color-dark">
+          {formatter.format(totalMoneyListOrder)}
+        </span>
+      </li>
+    </>
+  );
+}
+
+export default ShowBill;

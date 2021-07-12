@@ -1,6 +1,7 @@
 import {
   ADD_CART_ITEM,
   DELETE_CART_ITEM,
+  DELETE_LIST_CART_ORDERED,
   UPDATE_QUANTITY_CART_ITEM,
 } from "../constants/user";
 
@@ -39,6 +40,19 @@ const myReducer = (state = initialValue, action) => {
         (item) => item.id === action.payload.data
       );
       state.splice(indexDelete, 1);
+      localStorage.setItem("cart_shoe", JSON.stringify(state));
+      return [...state];
+
+    case DELETE_LIST_CART_ORDERED:
+      action.payload.data.forEach((itemOrder) => {
+        let indexDel = state.findIndex(
+          (itemCart) =>
+            itemCart.id === itemOrder.product.id &&
+            itemCart.size === itemOrder.product.size &&
+            itemCart.color === itemOrder.product.color
+        );
+        state.splice(indexDel, 1);
+      });
       localStorage.setItem("cart_shoe", JSON.stringify(state));
       return [...state];
     default:
