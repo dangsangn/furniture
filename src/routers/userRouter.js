@@ -4,6 +4,9 @@ import React from "react";
 import HomePage from "./../pages/Home";
 import ProductsPage from "./../pages/Products";
 import DetailProduct from "./../pages/DetailProduct";
+import Login from "./../pages/Login";
+import Register from "./../pages/Register";
+
 const routers = [
   {
     path: "/",
@@ -19,6 +22,16 @@ const routers = [
     path: "/products/:idProduct",
     exact: true,
     main: <DetailProduct />,
+  },
+  {
+    path: "/login",
+    exact: true,
+    main: <Login />,
+  },
+  {
+    path: "/register",
+    exact: true,
+    main: <Register />,
   },
 ];
 
