@@ -94,5 +94,26 @@
   "header": {
     "profile": "Hồ sơ",
     "logout": "Đăng xuất"
+  },
+  "cartPage": {
+    "color": "Màu sắc:",
+    "size": "Kích thước:",
+    "messageDeleteProduct": "Bạn có chắc chắn xóa sản phẩm này không?",
+    "titleOrder": "Đơn hàng của bạn",
+    "total": "Toàn bộ",
+    "subTotal": "Tổng phụ",
+    "shipping": "Phí vận chuyển",
+    "paymentRequired": "Vui lòng nhập chọn hình thức thanh toán",
+    "paymentRequiredInput": "Vui lòng nhập thẻ số của bạn",
+    "buttonSummit": "Kết thúc đặt hàng",
+    "chekbox1": "Thanh toán khi nhận hàng",
+    "chekbox2": "Thanh toán bằng thẻ",
+    "price": "Giá bán",
+    "quantity": "Số lượng",
+    "action": "Hành động",
+    "product": "Sản phẩm"
+  },
+  "productSeen": {
+    "title": "Các sản phẩm đã xem"
   }
 }

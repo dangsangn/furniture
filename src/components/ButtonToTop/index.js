@@ -15,10 +15,10 @@ function ButtonToTop(props) {
 
   return (
     <>
-      {height ? (
+      {height > 100 ? (
         <div className="btn-container">
           <button onClick={handleToTop} className="btn--primary btn--top">
-            <i class="fas fa-arrow-up"></i>
+            <i className="fas fa-arrow-up"></i>
           </button>
         </div>
       ) : (

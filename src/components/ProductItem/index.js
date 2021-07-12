@@ -3,10 +3,14 @@ import "./style.scss";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import ShowStar from "./../ShowStar";
+import { useDispatch } from "react-redux";
+import { addCartItem } from "../../actions/user";
+import { message } from "antd";
 
 function ProductItem(props) {
   const { data } = props;
   const history = useHistory();
+  const dispatch = useDispatch();
   let formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "VND",
@@ -15,12 +19,31 @@ function ProductItem(props) {
 
   const goToPageDetail = () => {
     history.push("/products/" + data.id);
+    let productsSeen = JSON.parse(sessionStorage.getItem("products_seen"));
+    if (productsSeen) {
+      const index = productsSeen.findIndex((item) => item.id === data.id);
+      index === -1 && productsSeen.push(data);
+    } else {
+      productsSeen = [];
+      productsSeen.push(data);
+    }
+    sessionStorage.setItem("products_seen", JSON.stringify(productsSeen));
   };
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    //chua lam page cart nen de link tam
-    history.push("/products");
+    dispatch(
+      addCartItem({
+        id: data.id,
+        name: data.name,
+        image: data.link_img[0],
+        price: data.price - (data.price * data.discount) / 100,
+        color: data.color[0],
+        quantity: 1,
+        size: data.size[0],
+      })
+    );
+    message.success("Add product to cart successfully!");
   };
 
   return (

@@ -1,0 +1,95 @@
+@import "../../style/global.scss";
+
+.cart-page {
+  .product-info-cart {
+    display: flex;
+    &__img {
+      img {
+        width: 100px;
+        margin-right: 20px;
+      }
+    }
+    &__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      &__link {
+        color: $font-dark;
+        font-size: 1.6rem;
+      }
+      div span {
+        font-size: 1.3rem;
+        font-weight: 400;
+      }
+      &__color {
+        padding-right: 8px;
+        border-right: 1px solid $silver;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+    input[type="number"] {
+      width: 50px;
+      text-align: center;
+    }
+    .ant-space-item {
+      cursor: pointer;
+      color: $new-red;
+    }
+  }
+
+  &__order {
+    background-color: #e5ecee;
+    padding: 24px 32px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 50px;
+    &__title {
+      font-size: 2rem;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $silver;
+    }
+    &__list {
+      font-weight: 400;
+      &__item {
+        margin-bottom: 8px;
+        padding-bottom: 12px;
+        border-bottom: 0.2px solid $bg-dark-light;
+        @include flex-box(space-between, center);
+        span:first-child {
+          width: 60%;
+        }
+        .color-dark {
+          color: $font-dark;
+          font-weight: 500;
+        }
+      }
+      &__container {
+        max-height: 240px;
+        overflow-y: auto;
+      }
+    }
+    .ant-form-item {
+      display: flex;
+      flex-direction: column;
+      .ant-form-item-label {
+        label {
+          float: left;
+        }
+      }
+      span {
+        .ant-form-item {
+          margin-bottom: 0;
+          width: 100%;
+        }
+      }
+    }
+    .btn--payment {
+      width: 100%;
+    }
+  }
+}

@@ -6,6 +6,11 @@ import {
   USER_REGISTER,
   USER_REGISTER_SUCCESS,
   USER_LOG_OUT,
+  ADD_CART_ITEM,
+  DELETE_CART_ITEM,
+  UPDATE_QUANTITY_CART_ITEM,
+  SEND_LIST_PAYMENT,
+  GET_LIST_PAYMENT_USER,
 } from "../constants/user";
 
 export const userLogin = (data) => {
@@ -53,5 +58,40 @@ export const getProfileUser = (data) => {
 export const userLogout = () => {
   return {
     type: USER_LOG_OUT,
+  };
+};
+
+export const addCartItem = (data) => {
+  return {
+    type: ADD_CART_ITEM,
+    payload: { data },
+  };
+};
+
+export const deleteCartItem = (id) => {
+  return {
+    type: DELETE_CART_ITEM,
+    payload: { data: id },
+  };
+};
+
+export const updateQuantityCart = (id, quantity, color, size) => {
+  return {
+    type: UPDATE_QUANTITY_CART_ITEM,
+    payload: { id, quantity, color, size },
+  };
+};
+
+export const sendListPayment = (data) => {
+  return {
+    type: SEND_LIST_PAYMENT,
+    payload: { data },
+  };
+};
+
+export const getListPaymentUser = (id) => {
+  return {
+    type: GET_LIST_PAYMENT_USER,
+    payload: { data: id },
   };
 };

@@ -16,7 +16,7 @@ function Header(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
+  const cart = useSelector((state) => state.cart);
   const handleLogout = () => {
     localStorage.removeItem("authentication_token");
     dispatch(userLogout());
@@ -103,9 +103,14 @@ function Header(props) {
             </Link>
             <div className="header_nav d-flex align-items-center ">
               <Navigation />
-              <a href="#1" className="header__cart">
+              <Link to="/cart" className="header__cart">
                 <i className="fas fa-shopping-cart"></i>
-              </a>
+                <span className="header__cart__show-amount">
+                  {cart.reduce((total, item) => {
+                    return total + item.quantity;
+                  }, 0)}
+                </span>
+              </Link>
               <button
                 className="btn btn-primary btn--search-header"
                 type="button"
