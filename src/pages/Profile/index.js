@@ -1,22 +1,23 @@
-import { Button, Checkbox, Form, Input, message, Select } from "antd";
+import { Button, Form, Input, Select, message } from "antd";
 import React, { useEffect } from "react";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
+import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { userRegister } from "../../actions/user";
+import {
+  getListPaymentUser,
+  getProfileUserSuccess,
+  updateProfileUser,
+} from "../../actions/user";
+import ListOrdered from "./ListOrdered";
 import "./style.scss";
 const { Option } = Select;
-
 const formItemLayout = {
   labelCol: {
     xs: {
       span: 24,
     },
     sm: {
-      span: 8,
+      span: 6,
     },
   },
   wrapperCol: {
@@ -24,7 +25,7 @@ const formItemLayout = {
       span: 24,
     },
     sm: {
-      span: 16,
+      span: 18,
     },
   },
 };
@@ -37,26 +38,38 @@ const tailFormItemLayout = {
     },
     sm: {
       span: 16,
-      offset: 8,
+      offset: 6,
     },
   },
 };
-
-function Register(props) {
+function Profile(props) {
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (!user.isRegister && user.errorRegisterMessage) {
-      message.warning(user.errorRegisterMessage);
+    form.setFieldsValue({
+      email: user.email,
+      password: user.password,
+      phone: user.phone,
+      address: user.address,
+      gender: user.gender,
+      fullName: user?.fullName,
+      avatar: user?.avatar,
+    });
+    dispatch(getListPaymentUser(user.id));
+    if (!user.isUpdated && user.errorUpdateProfileMessage) {
+      message.warning(user.errorUpdateProfileMessage);
     }
-    user.isRegister && message.success("Register success");
-  }, [user]);
+    if (user.isUpdated && user.messageUpdateSuccess) {
+      message.success("Update success");
+      dispatch(getProfileUserSuccess({ messageUpdateSuccess: "" }));
+    }
+  }, [dispatch, form, user]);
 
   const onFinish = (values) => {
-    dispatch(userRegister(values));
+    dispatch(updateProfileUser({ data: values, idUser: user.id }));
   };
 
   const prefixSelector = (
@@ -72,28 +85,28 @@ function Register(props) {
   );
 
   return (
-    <Container>
-      <div className="register-page mt-50">
+    <div className="profile-page mt-50">
+      <Container>
         <Row>
-          <Col xl={6}>
-            <div className="login-page__img">
-              <div className="login-page__img__content">
-                <h2>{t("register.titleImg")}</h2>
-                <p>{t("register.DescImg")}</p>
-                <Link to={"/login"} className="btn btn--primary">
-                  {" "}
-                  {t("register.loginBtn")}
-                </Link>
-              </div>
+          <Col xl={4} sm={12}>
+            <div className="profile-page__img">
+              <img
+                src={
+                  user?.avatar
+                    ? user.avatar
+                    : "https://wallpaperaccess.com/full/114760.jpg"
+                }
+                alt="imgPerson"
+              />
             </div>
           </Col>
-          <Col xl={6}>
-            <div className="login-page__form">
-              <h2>{t("register.title")}</h2>
+          <Col xl={8} sm={12}>
+            <div className="profile-page__info">
+              <h2 className="text-center">{t("profilePage.title")}</h2>
               <Form
                 {...formItemLayout}
                 form={form}
-                name="register"
+                name="updateProfile"
                 onFinish={onFinish}
                 initialValues={{
                   prefix: "84",
@@ -113,8 +126,9 @@ function Register(props) {
                       message: "Please input your E-mail!",
                     },
                   ]}
+                  value={user.email}
                 >
-                  <Input />
+                  <Input disabled />
                 </Form.Item>
 
                 <Form.Item
@@ -134,35 +148,12 @@ function Register(props) {
                 >
                   <Input.Password />
                 </Form.Item>
-
-                <Form.Item
-                  name="confirm"
-                  label={t("register.confirmPassword")}
-                  dependencies={["password"]}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please confirm your password!",
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
-                        }
-
-                        return Promise.reject(
-                          new Error(
-                            "The two passwords that you entered do not match!"
-                          )
-                        );
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password />
+                <Form.Item name="fullName" label={t("register.fullName")}>
+                  <Input />
                 </Form.Item>
-
+                <Form.Item name="avatar" label={t("register.avatar")}>
+                  <Input />
+                </Form.Item>
                 <Form.Item
                   name="phone"
                   label={t("register.phone")}
@@ -213,42 +204,30 @@ function Register(props) {
                   </Select>
                 </Form.Item>
 
-                <Form.Item
-                  name="agreement"
-                  valuePropName="checked"
-                  rules={[
-                    {
-                      validator: (_, value) =>
-                        value
-                          ? Promise.resolve()
-                          : Promise.reject(
-                              new Error("Should accept agreement")
-                            ),
-                    },
-                  ]}
-                  {...tailFormItemLayout}
-                >
-                  <Checkbox>
-                    {t("register.agreement1")}{" "}
-                    <a href="#1">{t("register.agreement2")}</a>
-                  </Checkbox>
-                </Form.Item>
                 <Form.Item {...tailFormItemLayout}>
                   <Button
                     type="primary"
                     htmlType="submit"
                     className="btn btn--primary"
                   >
-                    {t("register.register")}
+                    {t("register.update")}
                   </Button>
                 </Form.Item>
               </Form>
             </div>
           </Col>
         </Row>
-      </div>
-    </Container>
+        <Row>
+          <Col xl={12}>
+            <div className="profile-page__list-ordered mt-50">
+              <h2>{t("profilePage.listOrder")}</h2>
+              <ListOrdered />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 
-export default Register;
+export default Profile;

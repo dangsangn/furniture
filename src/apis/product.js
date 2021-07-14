@@ -19,3 +19,8 @@ export const fetchProductDeatil = (id) => {
   const url = `/products/${id}`;
   return authGet(url);
 };
+
+export const fetchProductsBySearch = (keySearch) => {
+  const url = `/products?q=${keySearch}`;
+  return authGet(url);
+};

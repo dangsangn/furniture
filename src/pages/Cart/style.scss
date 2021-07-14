@@ -1,4 +1,5 @@
 @import "../../style/global.scss";
+@import "../../style/mixin.scss";
 
 .cart-page {
   .product-info-cart {
@@ -29,16 +30,28 @@
     }
   }
 
-  table {
-    table-layout: fixed;
-    width: 100%;
-    input[type="number"] {
-      width: 50px;
-      text-align: center;
+  &__table {
+    @include for-size(mdC, down) {
+      width: 100%;
+      overflow-x: auto;
     }
-    .ant-space-item {
-      cursor: pointer;
-      color: $new-red;
+    table {
+      table-layout: fixed;
+      width: 100%;
+      input[type="number"] {
+        width: 50px;
+        text-align: center;
+      }
+      .ant-space-item {
+        cursor: pointer;
+        color: $new-red;
+      }
+
+      .product-info-cart {
+        @include for-size(mdC, down) {
+          width: 300px;
+        }
+      }
     }
   }
 

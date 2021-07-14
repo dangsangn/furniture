@@ -62,6 +62,7 @@ const myReducer = (state = initialValue, action) => {
         _page: 1,
         hasFilter: false,
       };
+
     case CLEAR_FILTERS:
       return {
         hasFilter: true,

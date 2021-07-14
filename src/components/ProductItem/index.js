@@ -1,15 +1,15 @@
 import React from "react";
 import "./style.scss";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import history from "../../untils/history";
 import ShowStar from "./../ShowStar";
 import { useDispatch } from "react-redux";
 import { addCartItem } from "../../actions/user";
 import { message } from "antd";
+import { getIdProduct } from "../../actions/product";
 
 function ProductItem(props) {
   const { data } = props;
-  const history = useHistory();
   const dispatch = useDispatch();
   let formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -18,6 +18,7 @@ function ProductItem(props) {
   const { t } = useTranslation();
 
   const goToPageDetail = () => {
+    dispatch(getIdProduct(data.id));
     history.push("/products/" + data.id);
     let productsSeen = JSON.parse(sessionStorage.getItem("products_seen"));
     if (productsSeen) {

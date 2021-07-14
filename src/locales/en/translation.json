@@ -82,7 +82,10 @@
     "confirmPassword": "Confirm Password",
     "phone": "Phone Number",
     "address": "Address",
-    "gender": "Gender"
+    "gender": "Gender",
+    "update": "Update",
+    "fullName": "FullName",
+    "avatar": "Avatar"
   },
   "login": {
     "btnLogin": "Create an Account",
@@ -110,9 +113,20 @@
     "chekbox2": "Payment by card",
     "price": "Price",
     "quantity": "Quantity",
-    "action": "Action"
+    "action": "Action",
+    "Address": "Address",
+    "phone": "Phone",
+    "typePayment": "Payments",
+    "dateBuy": "Date Buy"
   },
   "productSeen": {
     "title": "Viewed products"
+  },
+  "profilePage": {
+    "listOrder": "List Ordered",
+    "title": "Information User"
+  },
+  "reviews": {
+    "emptyReview": "Not have review"
   }
 }

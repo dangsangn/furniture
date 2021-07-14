@@ -11,6 +11,17 @@ import {
   UPDATE_QUANTITY_CART_ITEM,
   SEND_LIST_PAYMENT,
   GET_LIST_PAYMENT_USER,
+  ADD_A_REVIEW,
+  GET_REVIEW_OF_PRODUCT,
+  GET_REVIEW_OF_PRODUCT_SUCCESS,
+  ADD_A_REVIEW_SUCCESS,
+  DELETE_LIST_CART_ORDERED,
+  UPDATE_PROFILE_USER,
+  UPDATE_PROFILE_USER_SUCCESS,
+  USER_REGISTER_FAILURE,
+  UPDATE_PROFILE_USER_FAILURE,
+  GET_PROFILE_USER_SUCCESS,
+  GET_LIST_PAYMENT_USER_SUCCESS,
 } from "../constants/user";
 
 export const userLogin = (data) => {
@@ -48,9 +59,23 @@ export const userRegisterSuccess = (data) => {
   };
 };
 
+export const userRegisterFailure = (error) => {
+  return {
+    type: USER_REGISTER_FAILURE,
+    payload: { data: error },
+  };
+};
+
 export const getProfileUser = (data) => {
   return {
     type: GET_PROFILE_USER,
+    payload: { data },
+  };
+};
+
+export const getProfileUserSuccess = (data) => {
+  return {
+    type: GET_PROFILE_USER_SUCCESS,
     payload: { data },
   };
 };
@@ -75,6 +100,13 @@ export const deleteCartItem = (id) => {
   };
 };
 
+export const deleteListCartOrdered = (data) => {
+  return {
+    type: DELETE_LIST_CART_ORDERED,
+    payload: { data },
+  };
+};
+
 export const updateQuantityCart = (id, quantity, color, size) => {
   return {
     type: UPDATE_QUANTITY_CART_ITEM,
@@ -93,5 +125,61 @@ export const getListPaymentUser = (id) => {
   return {
     type: GET_LIST_PAYMENT_USER,
     payload: { data: id },
+  };
+};
+
+export const getListPaymentUserSuccess = (data) => {
+  return {
+    type: GET_LIST_PAYMENT_USER_SUCCESS,
+    payload: { data },
+  };
+};
+
+export const addAReview = (data) => {
+  return {
+    type: ADD_A_REVIEW,
+    payload: { data },
+  };
+};
+
+export const addAReviewSuccess = (data) => {
+  return {
+    type: ADD_A_REVIEW_SUCCESS,
+    payload: { data },
+  };
+};
+
+export const getReviewOfProduct = (id) => {
+  return {
+    type: GET_REVIEW_OF_PRODUCT,
+    payload: { data: id },
+  };
+};
+
+export const getReviewOfProductSuccess = (data) => {
+  return {
+    type: GET_REVIEW_OF_PRODUCT_SUCCESS,
+    payload: { data },
+  };
+};
+
+export const updateProfileUser = (data) => {
+  return {
+    type: UPDATE_PROFILE_USER,
+    payload: { data },
+  };
+};
+
+export const updateProfileUserSuccess = (data) => {
+  return {
+    type: UPDATE_PROFILE_USER_SUCCESS,
+    payload: { data },
+  };
+};
+
+export const updateProfileUserFailure = (error) => {
+  return {
+    type: UPDATE_PROFILE_USER_FAILURE,
+    payload: { data: error },
   };
 };

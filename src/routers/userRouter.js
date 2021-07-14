@@ -7,6 +7,7 @@ import DetailProduct from "./../pages/DetailProduct";
 import Login from "./../pages/Login";
 import Register from "./../pages/Register";
 import Cart from "./../pages/Cart";
+import Profile from "../pages/Profile";
 
 const routers = [
   {
@@ -38,6 +39,11 @@ const routers = [
     path: "/cart",
     exact: true,
     main: <Cart />,
+  },
+  {
+    path: "/profile",
+    exact: true,
+    main: <Profile />,
   },
 ];
 

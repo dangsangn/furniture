@@ -1,4 +1,7 @@
-import { GET_PRODUCT_DETAIL_SUCCESS } from "../constants/product";
+import {
+  GET_ID_PRODUCT,
+  GET_PRODUCT_DETAIL_SUCCESS,
+} from "../constants/product";
 
 let initialValue = {
   id: "",
@@ -19,7 +22,8 @@ const myReducer = (state = initialValue, action) => {
   switch (action.type) {
     case GET_PRODUCT_DETAIL_SUCCESS:
       return { ...state, ...action.payload.data };
-
+    case GET_ID_PRODUCT:
+      return { ...state, id: action.payload.data };
     default:
       return state;
   }

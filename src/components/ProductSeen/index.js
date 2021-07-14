@@ -16,7 +16,7 @@ function ProductSeen(props) {
     <div className="product-seen mt-50">
       <h2 className="product-seen__title">{t("productSeen.title")}</h2>
       {!listProductSeen || listProductSeen?.length === 0 ? (
-        ""
+        <p>No have product seen</p>
       ) : (
         <Swiper
           spaceBetween={0}

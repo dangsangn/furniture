@@ -8,13 +8,15 @@ import {
   Input,
   Button,
   Form,
+  Modal,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   deleteCartItem,
+  deleteListCartOrdered,
   sendListPayment,
   updateQuantityCart,
 } from "../../actions/user";
@@ -22,11 +24,14 @@ import ProductSeen from "../../components/ProductSeen";
 import history from "../../untils/history";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
+import ShowBill from "./ShowBill";
 
 function CartPage(props) {
   const { t } = useTranslation();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
+  const [data, setData] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "VND",
@@ -39,6 +44,7 @@ function CartPage(props) {
   });
   const [listOrder, setListOrder] = useState([]);
   const [totalMoneyListOrder, setTotalMoneyListOrder] = useState(0);
+  const [disabledInput, setDisabledInput] = useState([]);
   const columns = [
     {
       title: `${t("cartPage.product")}`,
@@ -77,6 +83,7 @@ function CartPage(props) {
       dataIndex: "quantity",
       render: ({ id, quantity, color, size }) => (
         <InputNumber
+          disabled={disabledInput.includes(id + color + size) ? true : false}
           min={1}
           max={10}
           defaultValue={quantity}
@@ -113,28 +120,33 @@ function CartPage(props) {
     },
   ];
 
-  const data = cart.map((item, index) => ({
-    key: index,
-    product: {
-      id: item.id,
-      name: item.name,
-      img: item.image,
-      size: item.size,
-      color: item.color,
-    },
-    price: item.price,
-    quantity: {
-      quantity: item.quantity,
-      id: item.id,
-      color: item.color,
-      size: item.size,
-    },
-    total: item.quantity * item.price,
-    action: item.id,
-  }));
+  useEffect(() => {
+    setData(
+      cart.map((item) => ({
+        key: item.id + item.color + item.size,
+        product: {
+          id: item.id,
+          name: item.name,
+          img: item.image,
+          size: item.size,
+          color: item.color,
+        },
+        price: item.price,
+        quantity: {
+          quantity: item.quantity,
+          id: item.id,
+          color: item.color,
+          size: item.size,
+        },
+        total: item.quantity * item.price,
+        action: item.id,
+      }))
+    );
+  }, [cart]);
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
+      setDisabledInput([...selectedRowKeys]);
       let total = selectedRows.reduce((totalNow, item) => {
         return totalNow + item.total;
       }, 0);
@@ -168,8 +180,9 @@ function CartPage(props) {
             ...values,
           })
         );
+        dispatch(deleteListCartOrdered(listOrder));
+        showModal();
         message.success("Order success!");
-        history.push("/products");
       }
     } else {
       history.push("/login");
@@ -185,12 +198,26 @@ function CartPage(props) {
     });
   }
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    history.push("/products");
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setListOrder([]);
+  };
+
   return (
     <div className="cart-page mt-50">
       <Container>
         <Row>
           <Col xl={8} sm={12}>
-            <div>
+            <div className="cart-page__table">
               <Table
                 rowSelection={{
                   type: "checkbox",
@@ -209,40 +236,15 @@ function CartPage(props) {
                 {t("cartPage.titleOrder")}
               </h2>
               <ul className="cart-page__order__list">
-                <li className="cart-page__order__list__item">
-                  <span>{t("cartPage.product")}</span>
-                  <span>{t("cartPage.total")}</span>
-                </li>
-                <div className="cart-page__order__list__container">
-                  {listOrder.map((item, index) => (
-                    <li className="cart-page__order__list__item" key={index}>
-                      <span>{item?.product.name} </span>
-                      <span>x {item?.quantity.quantity}</span>
-                      <span>{formatter.format(item?.total)}</span>
-                    </li>
-                  ))}
-                </div>
-                <li className="cart-page__order__list__item">
-                  <span className="color-dark">{t("cartPage.subTotal")} </span>
-                  <span className="color-dark">
-                    {formatter.format(totalMoneyListOrder)}
-                  </span>
-                </li>
-                <li className="cart-page__order__list__item">
-                  <span className="color-dark">{t("cartPage.shipping")} </span>
-                  <span className="color-dark">{formatter.format(0)}</span>
-                </li>
-                <li className="cart-page__order__list__item">
-                  <span className="color-dark">{t("cartPage.total")} </span>
-                  <span className="color-dark">
-                    {formatter.format(totalMoneyListOrder)}
-                  </span>
-                </li>
+                <ShowBill
+                  listOrder={listOrder}
+                  totalMoneyListOrder={totalMoneyListOrder}
+                />
               </ul>
               <Form onFinish={onSubmitPayment}>
                 <Form.Item
                   name="payment"
-                  label="Payment by"
+                  label={t("cartPage.typePayment")}
                   rules={[
                     {
                       required: true,
@@ -283,12 +285,47 @@ function CartPage(props) {
                 >
                   {t("cartPage.buttonSummit")}
                 </Button>
+                <Modal
+                  title="Order successfully!"
+                  visible={isModalVisible}
+                  onOk={handleOk}
+                  onCancel={handleCancel}
+                  okText={"Continue shopping"}
+                  cancelText={"Close"}
+                >
+                  <ul className="cart-page__order__list">
+                    <ShowBill
+                      listOrder={listOrder}
+                      totalMoneyListOrder={totalMoneyListOrder}
+                    />
+                    <li className="cart-page__order__list__item">
+                      <span className="color-dark">
+                        {t("cartPage.Address")}:{" "}
+                      </span>
+                      <span className="color-dark">{user.address}</span>
+                    </li>
+                    <li className="cart-page__order__list__item">
+                      <span className="color-dark">
+                        {t("cartPage.phone")}:{" "}
+                      </span>
+                      <span className="color-dark">{0 + user.phone}</span>
+                    </li>
+                    <li className="cart-page__order__list__item">
+                      <span className="color-dark">
+                        {t("cartPage.typePayment")}:{" "}
+                      </span>
+                      <span className="color-dark">{payment}</span>
+                    </li>
+                  </ul>
+                </Modal>
               </Form>
             </div>
           </Col>
         </Row>
         <Row>
-          <ProductSeen />
+          <Col xl={12} sm={12}>
+            <ProductSeen />
+          </Col>
         </Row>
       </Container>
     </div>

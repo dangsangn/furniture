@@ -10,12 +10,31 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 body {
   font-family: "Roboto", sans-serif;
   font-size: 1.3rem;
   font-weight: 500;
   line-height: 2.4rem;
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-dark-light;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $font-dark;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $font-dark;
 }
 
 ul,

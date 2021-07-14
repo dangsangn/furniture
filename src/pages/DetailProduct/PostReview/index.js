@@ -1,7 +1,9 @@
+import { Button, Form, Input, message, Rate } from "antd";
 import React from "react";
-import { Form, Input, Button } from "antd";
 import { useTranslation } from "react-i18next";
-import { Rate } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { addAReview } from "../../../actions/user";
+
 const layout = {
   labelCol: {
     span: 8,
@@ -21,9 +23,17 @@ const desc = ["terrible", "bad", "normal", "good", "wonderful"];
 function PostReview(props) {
   const [form] = Form.useForm();
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const { idProduct } = props;
+  const user = useSelector((state) => state.user);
   const onFinish = (values) => {
-    console.log(values);
+    if (!user.isLogin) {
+      message.warning("Login before review!");
+    } else {
+      dispatch(addAReview({ idProduct, nameUser: user.email, ...values }));
+      message.success("Add a review success!");
+      form.resetFields();
+    }
   };
 
   return (
@@ -56,7 +66,7 @@ function PostReview(props) {
           <Input.TextArea />
         </Form.Item>
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" className="btn btn--primary">
             {t("button.submit")}
           </Button>
         </Form.Item>

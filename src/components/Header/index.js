@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Navigation from "./navigation";
 import { Select } from "antd";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Menu, Dropdown, Button, Avatar } from "antd";
 import history from "../../untils/history";
 import { userLogout } from "../../actions/user";
+import BoxSearch from "../BoxSearch";
+import { getKeySearch } from "../../actions/product";
 
 function Header(props) {
   const { Option } = Select;
@@ -17,16 +19,23 @@ function Header(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
+  const [keySearch, setKeySearch] = useState();
+  const inputSearch = useRef(null);
   const handleLogout = () => {
     localStorage.removeItem("authentication_token");
     dispatch(userLogout());
     history.push("/");
   };
 
+  const handleSearchProduct = (e) => {
+    dispatch(getKeySearch(e.target.value));
+    setKeySearch(e.target.value);
+  };
+
   const menu = (
     <Menu>
       <Menu.Item key={1}>
-        <Link to={"/"} rel="noopener noreferrer">
+        <Link to={"/profile"} rel="noopener noreferrer">
           {t("header.profile")}
         </Link>
       </Menu.Item>
@@ -75,7 +84,13 @@ function Header(props) {
                   arrow
                 >
                   <Button>
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    <Avatar
+                      src={
+                        user?.avatar
+                          ? user.avatar
+                          : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      }
+                    />
                     {user?.email}
                   </Button>
                 </Dropdown>
@@ -125,17 +140,24 @@ function Header(props) {
           </div>
         </Container>
       </div>
-      <div className="collapse header__search" id="collapseExample">
-        <div className="container">
+      <div
+        ref={inputSearch}
+        className="collapse header__search"
+        id="collapseExample"
+      >
+        <Container>
           <input
             type="email"
             className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="Search Here"
+            onChange={handleSearchProduct}
+            value={keySearch}
           />
-        </div>
+        </Container>
       </div>
+      <BoxSearch keySearch={keySearch} inputSearch={inputSearch.current} />
     </>
   );
 }

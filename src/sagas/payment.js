@@ -3,7 +3,6 @@ import { sendListPayment } from "../apis/user";
 import { SEND_LIST_PAYMENT } from "../constants/user";
 
 function* sendListPaymentSaga({ payload }) {
-  console.log(payload.data);
   try {
     yield call(sendListPayment, payload.data);
   } catch (error) {

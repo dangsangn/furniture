@@ -7,6 +7,8 @@ import pagination from "./pagination";
 import productDetail from "./product-detail";
 import user from "./user";
 import cart from "./cart";
+import reviews from "./reviews";
+import payment from "./payment";
 
 const rootReducer = combineReducers({
   products,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   productDetail,
   user,
   cart,
+  reviews,
+  payment,
 });
 
 export default rootReducer;

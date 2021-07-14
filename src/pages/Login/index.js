@@ -1,17 +1,29 @@
-import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
+import { Button, Checkbox, Form, Input, message } from "antd";
+import React, { useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { userLogin } from "../../actions/user";
+import history from "../../untils/history";
 import "./style.scss";
 
 function Login(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(user);
+  useEffect(() => {
+    if (!user.isLogin && user.errorLoginMessage) {
+      message.warning(user.errorLoginMessage);
+    }
+    if (user.isLogin && user.succesLoginMessage) {
+      message.success("Login success");
+      history.push("/");
+    }
+  }, [user]);
 
   const onFinish = (values) => {
     dispatch(userLogin(values));
