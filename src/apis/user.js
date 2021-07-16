@@ -1,4 +1,4 @@
-import { authGet, authPatch, authPost } from "./axiosClient";
+import { authDelete, authGet, authPatch, authPost } from "./axiosClient";
 
 export const fetchUserLogin = (data) => {
   const url = "/auth/login";
@@ -38,4 +38,19 @@ export const getReviewOfProductApi = (id) => {
 export const updateProfileUserApi = (payload) => {
   const url = `/users/${payload.data.idUser}`;
   return authPatch(url, payload.data.data);
+};
+
+export const deleteUserApi = (id) => {
+  const url = `/users/${id}`;
+  return authDelete(url);
+};
+
+export const fetchListUserApi = () => {
+  const url = "/users";
+  return authGet(url);
+};
+
+export const searchUserByNameApi = (data) => {
+  const url = `/users?email_like=${data}`;
+  return authGet(url);
 };

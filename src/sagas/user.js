@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import {
   getListPaymentUserSuccess,
+  getListUserSuccess,
   getProfileUserSuccess,
   updateProfileUserFailure,
   updateProfileUserSuccess,
@@ -11,6 +12,7 @@ import {
   userRegisterSuccess,
 } from "../actions/user";
 import {
+  fetchListUserApi,
   fetchProfileUser,
   fetchUserLogin,
   fetchUserRegister,
@@ -20,6 +22,7 @@ import {
 import { adminProductURL, homeURL, loginURL } from "../constants/baseURL";
 import {
   GET_LIST_PAYMENT_USER,
+  GET_LIST_USER,
   GET_PROFILE_USER,
   UPDATE_PROFILE_USER,
   USER_LOGIN,
@@ -89,12 +92,23 @@ function* getListPaymentUserSage({ payload }) {
   }
 }
 
+function* getListUserSaga() {
+  try {
+    const res = yield call(fetchListUserApi);
+    let data = res.data.filter((user) => user?.role !== "admin");
+    yield put(getListUserSuccess(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest(USER_LOGIN, userLoginSaga);
   yield takeLatest(USER_REGISTER, userRegisterSaga);
   yield takeEvery(GET_PROFILE_USER, getProfileUserSaga);
   yield takeLatest(UPDATE_PROFILE_USER, updateProfileUserSaga);
   yield takeEvery(GET_LIST_PAYMENT_USER, getListPaymentUserSage);
+  yield takeEvery(GET_LIST_USER, getListUserSaga);
 }
 
 export default userSaga;

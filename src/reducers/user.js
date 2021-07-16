@@ -1,4 +1,5 @@
 import {
+  GET_LIST_USER_SUCCESS,
   GET_PROFILE_USER_SUCCESS,
   UPDATE_PROFILE_USER,
   UPDATE_PROFILE_USER_FAILURE,
@@ -16,6 +17,7 @@ let initialValue = {
   isLogin: false,
   isUpdated: false,
   isRegister: false,
+  listUser: [],
 };
 
 const myReducer = (state = initialValue, action) => {
@@ -83,6 +85,13 @@ const myReducer = (state = initialValue, action) => {
         errorUpdateProfileMessage: action.payload.data,
         messageUpdateSuccess: "",
       };
+
+    case GET_LIST_USER_SUCCESS:
+      return {
+        ...state,
+        listUser: action.payload.data,
+      };
+
     default:
       return state;
   }

@@ -22,6 +22,12 @@ import {
   UPDATE_PROFILE_USER_FAILURE,
   GET_PROFILE_USER_SUCCESS,
   GET_LIST_PAYMENT_USER_SUCCESS,
+  DELETE_USER,
+  DELETE_USER_SUCCESS,
+  SEARCH_USER,
+  SEARCH_USER_SUCCESS,
+  GET_LIST_USER,
+  GET_LIST_USER_SUCCESS,
 } from "../constants/user";
 
 export const userLogin = (data) => {
@@ -181,5 +187,53 @@ export const updateProfileUserFailure = (error) => {
   return {
     type: UPDATE_PROFILE_USER_FAILURE,
     payload: { data: error },
+  };
+};
+
+export const getListUser = () => {
+  return {
+    type: GET_LIST_USER,
+  };
+};
+
+export const getListUserSuccess = (data) => {
+  return {
+    type: GET_LIST_USER_SUCCESS,
+    payload: { data },
+  };
+};
+
+export const deleteUser = (id) => {
+  return {
+    type: DELETE_USER,
+    payload: { data: id },
+  };
+};
+
+export const deleteUserSuccess = (id) => {
+  return {
+    type: DELETE_USER_SUCCESS,
+    payload: { data: id },
+  };
+};
+
+export const deleteUserFailure = (error) => {
+  return {
+    type: DELETE_USER,
+    payload: { data: error },
+  };
+};
+
+export const searchUser = (keySearch) => {
+  return {
+    type: SEARCH_USER,
+    payload: { data: keySearch },
+  };
+};
+
+export const searchUserSuccess = (data) => {
+  return {
+    type: SEARCH_USER_SUCCESS,
+    payload: { data },
   };
 };
