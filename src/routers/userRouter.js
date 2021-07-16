@@ -8,40 +8,49 @@ import Login from "./../pages/Login";
 import Register from "./../pages/Register";
 import Cart from "./../pages/Cart";
 import Profile from "../pages/Profile";
+import {
+  cartURL,
+  homeURL,
+  loginURL,
+  productDetailURL,
+  productsURL,
+  profileURL,
+  registerURL,
+} from "../constants/baseURL";
 
 const routers = [
   {
-    path: "/",
+    path: homeURL,
     exact: true,
     main: <HomePage />,
   },
   {
-    path: "/products",
+    path: productsURL,
     exact: true,
     main: <ProductsPage />,
   },
   {
-    path: "/products/:idProduct",
+    path: productDetailURL,
     exact: true,
     main: <DetailProduct />,
   },
   {
-    path: "/login",
+    path: loginURL,
     exact: true,
     main: <Login />,
   },
   {
-    path: "/register",
+    path: registerURL,
     exact: true,
     main: <Register />,
   },
   {
-    path: "/cart",
+    path: cartURL,
     exact: true,
     main: <Cart />,
   },
   {
-    path: "/profile",
+    path: profileURL,
     exact: true,
     main: <Profile />,
   },

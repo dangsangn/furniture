@@ -3,31 +3,38 @@ import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Drawer, Button } from "antd";
 import "./style.scss";
+import {
+  aboutURL,
+  blogURL,
+  contactURL,
+  homeURL,
+  productsURL,
+} from "../../../constants/baseURL";
 
 function Navigation(props) {
   let menus = [
     {
-      to: "/",
+      to: homeURL,
       label: "navigation.home",
       exact: true,
     },
     {
-      to: "/products",
+      to: productsURL,
       label: "navigation.shop",
       exact: false,
     },
     {
-      to: "/blog",
+      to: blogURL,
       label: "navigation.blog",
       exact: false,
     },
     {
-      to: "/about-us",
+      to: aboutURL,
       label: "navigation.aboutUs",
       exact: false,
     },
     {
-      to: "/contact",
+      to: contactURL,
       label: "navigation.contact",
       exact: false,
     },

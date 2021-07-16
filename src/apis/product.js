@@ -1,4 +1,4 @@
-import { authGet } from "./axiosClient";
+import { authDelete, authGet, authPatch, authPost } from "./axiosClient";
 
 export const fetchProductLatest = () => {
   const url = `/products?productLatest=true&_limit=8`;
@@ -23,4 +23,19 @@ export const fetchProductDeatil = (id) => {
 export const fetchProductsBySearch = (keySearch) => {
   const url = `/products?q=${keySearch}`;
   return authGet(url);
+};
+
+export const addProductApi = (data) => {
+  const url = "/products";
+  return authPost(url, data);
+};
+
+export const deleteProductApi = (id) => {
+  const url = `/products/${id}`;
+  return authDelete(url);
+};
+
+export const updateProductApi = (id, data) => {
+  const url = `/products/${id}`;
+  return authPatch(url, data);
 };
