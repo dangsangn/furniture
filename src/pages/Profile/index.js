@@ -8,6 +8,8 @@ import {
   getProfileUserSuccess,
   updateProfileUser,
 } from "../../actions/user";
+import { homeURL } from "../../constants/baseURL";
+import history from "../../untils/history";
 import ListOrdered from "./ListOrdered";
 import "./style.scss";
 const { Option } = Select;
@@ -47,8 +49,11 @@ function Profile(props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [form] = Form.useForm();
-
+  const token = JSON.parse(localStorage.getItem("authentication_token"));
   useEffect(() => {
+    if (!token) {
+      history.push(homeURL);
+    }
     form.setFieldsValue({
       email: user.email,
       password: user.password,
@@ -66,7 +71,7 @@ function Profile(props) {
       message.success("Update success");
       dispatch(getProfileUserSuccess({ messageUpdateSuccess: "" }));
     }
-  }, [dispatch, form, user]);
+  }, [dispatch, form, user, token]);
 
   const onFinish = (values) => {
     dispatch(updateProfileUser({ data: values, idUser: user.id }));

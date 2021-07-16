@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { userLogin } from "../../actions/user";
-import history from "../../untils/history";
 import "./style.scss";
 
 function Login(props) {
@@ -21,7 +20,6 @@ function Login(props) {
     }
     if (user.isLogin && user.succesLoginMessage) {
       message.success("Login success");
-      history.push("/");
     }
   }, [user]);
 

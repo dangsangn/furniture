@@ -17,6 +17,7 @@ import {
   getListPaymentUser,
   updateProfileUserApi,
 } from "../apis/user";
+import { adminProductURL, homeURL, loginURL } from "../constants/baseURL";
 import {
   GET_LIST_PAYMENT_USER,
   GET_PROFILE_USER,
@@ -36,6 +37,12 @@ function* userLoginSaga({ payload }) {
     let decoded = jwt.decode(getToken.data.access_token);
     yield put(userLoginSuccess({ email: decoded.email }));
     let getData = yield call(fetchProfileUser, decoded.email);
+
+    if (getData.data[0].role === "admin") {
+      history.push(adminProductURL);
+    } else {
+      history.push(homeURL);
+    }
     yield put(getProfileUserSuccess(getData.data[0]));
   } catch (error) {
     yield put(userLoginFailure("Login fail!"));
@@ -47,7 +54,7 @@ function* userRegisterSaga({ payload }) {
     const res = yield call(fetchUserRegister, payload.data);
     if (res.status === 201) {
       yield put(userRegisterSuccess());
-      history.push("/login");
+      history.push(loginURL);
     }
   } catch (error) {
     yield put(userRegisterFailure("Register fail!"));
