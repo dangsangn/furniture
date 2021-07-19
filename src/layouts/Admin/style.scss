@@ -5,8 +5,10 @@
   display: flex;
 
   &__menu {
-    flex: 0 0 16.6667%;
-    max-width: 16.6667%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 16.6667%;
     padding: 0 24px;
     background-color: #4e73df;
     &__img {
@@ -29,6 +31,7 @@
   &__content {
     flex: 0 0 83.3333%;
     max-width: 83.3333%;
+    margin-left: 16.6667%;
     &__header {
       @include flex-box(flex-end, center);
       padding: 10px;

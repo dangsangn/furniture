@@ -30,8 +30,12 @@
     }
   }
 
-  .no-boder::after {
-    border: none;
+  .row {
+    .col-xl-3:last-child {
+      .feature__item::after {
+        border: none;
+      }
+    }
   }
 }
 

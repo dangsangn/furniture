@@ -28,7 +28,7 @@ const myReducer = (state = initialValue, action) => {
         });
         result = result.concat(temp);
       });
-      return [...result];
+      return [...result].reverse();
     default:
       return state;
   }

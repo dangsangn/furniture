@@ -1,42 +1,78 @@
-import { Button, Input, message, Popconfirm, Space, Table } from "antd";
-import Form from "antd/lib/form/Form";
-import Modal from "antd/lib/modal/Modal";
+import {
+  Button,
+  Input,
+  message,
+  Popconfirm,
+  Radio,
+  Space,
+  Table,
+  Form,
+  Modal,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getListUser } from "../../../actions/user";
+import {
+  cleareMessageUser,
+  deleteUser,
+  getListUser,
+  searchUser,
+  updateProfileUser,
+} from "../../../actions/user";
 import "./style.scss";
 
 function UserAdminPage(props) {
+  const [form] = Form.useForm();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [idUser, setIdUser] = useState();
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  useEffect(() => {
+    if (user.isUpdated && user.messageUpdateSuccess) {
+      message.success("Update user success");
+      setIsModalVisible(false);
+      dispatch(cleareMessageUser());
+    }
+    if (!user.isUpdated && user.errorUpdateProfileMessage) {
+      message.error("Update user error");
+      dispatch(cleareMessageUser());
+    }
+    if (user.isDelete && user.messageDeleteUser === "success") {
+      message.success("Delete user success");
+      dispatch(cleareMessageUser());
+    }
+    if (!user.isDelete && user.messageDeleteUser === "error") {
+      message.error("Delete user error");
+      dispatch(cleareMessageUser());
+    }
+  }, [dispatch, user]);
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
   useEffect(() => {
     dispatch(getListUser());
   }, [dispatch]);
 
-  function handleDeleteUser(e) {
-    console.log(e);
-    // message.success("Click on Yes");
-  }
-
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
-  const handleEditUser = (id, data) => {};
-  const handleKeySearch = () => {};
+  function handleDeleteUser(value) {
+    dispatch(deleteUser(value.id));
+  }
+
+  const handleEditUser = (values) => {
+    dispatch(updateProfileUser({ data: values, idUser: idUser }));
+  };
+
+  const opendFormUpdateUser = (value) => {
+    form.setFieldsValue(value);
+    setIdUser(value.id);
+    setIsModalVisible(true);
+  };
+
+  const handleKeySearchUser = (e) => {
+    dispatch(searchUser(e.target.value));
+  };
+
   const columns = [
     {
       title: "ID User",
@@ -52,67 +88,64 @@ function UserAdminPage(props) {
       title: "Action",
       key: "action",
       render: (value) => (
-        <Space size="middle">
-          <Popconfirm
-            title="Are you sure to delete this task?"
-            onConfirm={() => handleDeleteUser(value)}
-            okText="Yes"
-            cancelText="No"
-            className="btn-cursor"
-          >
-            <i className="fas fa-trash"></i>
-          </Popconfirm>
-          <Button
-            className="btn--editProduct"
-            onClick={() => handleEditUser(value)}
-          >
-            <i class="fas fa-pen"></i>
-          </Button>
-        </Space>
+        <>
+          {value.role === "admin" ? (
+            ""
+          ) : (
+            <Space size="middle">
+              <Popconfirm
+                title="Are you sure to delete this task?"
+                onConfirm={() => handleDeleteUser(value)}
+                okText="Yes"
+                cancelText="No"
+                className="btn-cursor"
+              >
+                <i className="fas fa-trash"></i>
+              </Popconfirm>
+              <Button
+                className="btn--editProduct"
+                onClick={() => opendFormUpdateUser(value)}
+              >
+                <i className="fas fa-pen"></i>
+              </Button>
+            </Space>
+          )}
+        </>
       ),
     },
   ];
 
-  const data = user.listUser.map((user) => {
+  const data = user.listUser?.map((user) => {
     return {
       key: user.id,
       id: user.id,
       email: user.email,
+      password: user.password,
+      role: user?.role || "user",
     };
   });
 
   return (
     <div className="product-admin-page">
       <Modal
-        title="Basic Modal"
+        title="Edit User"
         visible={isModalVisible}
-        onOk={handleOk}
+        footer={""}
         onCancel={handleCancel}
       >
         <Form
-          name="basic"
+          form={form}
+          name="Updata User"
           labelCol={{
             span: 8,
           }}
           wrapperCol={{
             span: 16,
           }}
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
+          onFinish={handleEditUser}
         >
-          <Form.Item
-            label="Username"
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: "Please input your username!",
-              },
-            ]}
-          >
-            <Input />
+          <Form.Item label="Email" name="email">
+            <Input disabled />
           </Form.Item>
 
           <Form.Item
@@ -127,7 +160,18 @@ function UserAdminPage(props) {
           >
             <Input.Password />
           </Form.Item>
-
+          <Form.Item
+            label="Role"
+            name="role"
+            rules={[{ required: true, message: "Please choose a role" }]}
+          >
+            <Radio.Group>
+              <Space direction="horizontal">
+                <Radio value={"admin"}>Admin</Radio>
+                <Radio value={"user"}>User</Radio>
+              </Space>
+            </Radio.Group>
+          </Form.Item>
           <Form.Item
             wrapperCol={{
               offset: 8,
@@ -135,13 +179,13 @@ function UserAdminPage(props) {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Submit
+              Update
             </Button>
           </Form.Item>
         </Form>
       </Modal>
       <div className="product-admin-page__action user-admin-page__action d-flex align-items-center">
-        <Input placeholder="Search User..." onChange={handleKeySearch} />
+        <Input placeholder="Search User..." onChange={handleKeySearchUser} />
       </div>
       <Table columns={columns} dataSource={data} />
     </div>

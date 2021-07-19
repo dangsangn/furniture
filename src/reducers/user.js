@@ -1,6 +1,11 @@
 import {
+  CLEARE_MESSAGE_USER,
+  DELETE_USER,
+  DELETE_USER_FAILURE,
+  DELETE_USER_SUCCESS,
   GET_LIST_USER_SUCCESS,
   GET_PROFILE_USER_SUCCESS,
+  SEARCH_USER_SUCCESS,
   UPDATE_PROFILE_USER,
   UPDATE_PROFILE_USER_FAILURE,
   UPDATE_PROFILE_USER_SUCCESS,
@@ -72,6 +77,12 @@ const myReducer = (state = initialValue, action) => {
     case UPDATE_PROFILE_USER:
       return { ...state, isUpdated: false, messageUpdateSuccess: "" };
     case UPDATE_PROFILE_USER_SUCCESS:
+      const indexUpdate = state.listUser.findIndex(
+        (item) => item.id === action.payload.data.id
+      );
+      if (indexUpdate !== -1) {
+        state.listUser[indexUpdate] = action.payload.data;
+      }
       return {
         ...state,
         ...action.payload.data,
@@ -92,6 +103,50 @@ const myReducer = (state = initialValue, action) => {
         listUser: action.payload.data,
       };
 
+    case DELETE_USER:
+      return {
+        ...state,
+        isDelete: false,
+        messageDeleteUser: "",
+      };
+
+    case DELETE_USER_SUCCESS:
+      const indexDel = state.listUser.findIndex(
+        (item) => item.id === action.payload.data
+      );
+      if (indexDel !== -1) {
+        state.listUser.splice(indexDel, 1);
+      }
+      return {
+        ...state,
+        isDelete: true,
+        messageDeleteUser: "success",
+      };
+
+    case DELETE_USER_FAILURE:
+      return {
+        ...state,
+        isDeleted: false,
+        messageDeleteUser: "error",
+      };
+
+    case SEARCH_USER_SUCCESS:
+      return {
+        ...state,
+        listUser: action.payload.data,
+      };
+
+    case CLEARE_MESSAGE_USER:
+      return {
+        ...state,
+        errorLoginMessage: "",
+        succesLoginMessage: "",
+        errorRegisterMessage: "",
+        messageUpdateSuccess: "",
+        errorUpdateProfileMessage: "",
+        messageDeleteUser: "",
+        succesGetProfileMessage: "",
+      };
     default:
       return state;
   }

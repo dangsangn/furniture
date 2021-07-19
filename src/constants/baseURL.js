@@ -9,7 +9,7 @@ export const cartURL = "/cart";
 export const profileURL = "/profile";
 export const blogURL = "/blog";
 export const aboutURL = "/about";
-export const contactURL = "contact";
+export const contactURL = "/contact";
 
 export const adminHomeURL = "/admin";
 export const adminProductURL = "/admin/products";

@@ -8,7 +8,7 @@ function ShowBill(props) {
   });
   const { listOrder, totalMoneyListOrder } = props;
   return (
-    <>
+    <ul className="cart-page__order__list">
       <li className="cart-page__order__list__item">
         <span>{t("cartPage.product")}</span>
         <span>{t("cartPage.total")}</span>
@@ -24,21 +24,21 @@ function ShowBill(props) {
       </div>
       <li className="cart-page__order__list__item">
         <span className="color-dark">{t("cartPage.subTotal")} </span>
-        <span className="color-dark">
+        <span className="color-red">
           {formatter.format(totalMoneyListOrder)}
         </span>
       </li>
       <li className="cart-page__order__list__item">
         <span className="color-dark">{t("cartPage.shipping")} </span>
-        <span className="color-dark">{formatter.format(0)}</span>
+        <span className="color-red">{formatter.format(0)}</span>
       </li>
       <li className="cart-page__order__list__item">
         <span className="color-dark">{t("cartPage.total")} </span>
-        <span className="color-dark">
+        <span className="color-red">
           {formatter.format(totalMoneyListOrder)}
         </span>
       </li>
-    </>
+    </ul>
   );
 }
 

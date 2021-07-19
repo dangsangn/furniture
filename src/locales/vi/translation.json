@@ -118,7 +118,8 @@
     "Address": "Địa chỉ",
     "phone": "Điện thoại",
     "typePayment": "Hình thức thanh toán",
-    "dateBuy": "Ngày mua"
+    "dateBuy": "Ngày mua",
+    "bankRequiredInput": "Vui lòng nhập tên ngân hàng."
   },
   "productSeen": {
     "title": "Các sản phẩm đã xem"

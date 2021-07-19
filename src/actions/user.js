@@ -28,6 +28,8 @@ import {
   SEARCH_USER_SUCCESS,
   GET_LIST_USER,
   GET_LIST_USER_SUCCESS,
+  CLEARE_MESSAGE_USER,
+  DELETE_USER_FAILURE,
 } from "../constants/user";
 
 export const userLogin = (data) => {
@@ -219,7 +221,7 @@ export const deleteUserSuccess = (id) => {
 
 export const deleteUserFailure = (error) => {
   return {
-    type: DELETE_USER,
+    type: DELETE_USER_FAILURE,
     payload: { data: error },
   };
 };
@@ -235,5 +237,11 @@ export const searchUserSuccess = (data) => {
   return {
     type: SEARCH_USER_SUCCESS,
     payload: { data },
+  };
+};
+
+export const cleareMessageUser = () => {
+  return {
+    type: CLEARE_MESSAGE_USER,
   };
 };

@@ -12,6 +12,7 @@ import {
 } from "../../../actions/product";
 import FormProduct from "./FormProduct";
 import "./style.scss";
+
 function ProductAdminPage(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -149,7 +150,7 @@ function ProductAdminPage(props) {
     },
   ];
 
-  const data = products.listProduct.map((item) => {
+  const data = [...products.listProduct].reverse().map((item) => {
     return {
       key: item.id,
       name: item.name,

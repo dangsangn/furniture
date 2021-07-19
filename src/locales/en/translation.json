@@ -117,7 +117,8 @@
     "Address": "Address",
     "phone": "Phone",
     "typePayment": "Payments",
-    "dateBuy": "Date Buy"
+    "dateBuy": "Date Buy",
+    "bankRequiredInput": "Please input name bank."
   },
   "productSeen": {
     "title": "Viewed products"

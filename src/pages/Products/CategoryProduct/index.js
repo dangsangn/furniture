@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../../actions/category";
 import { getProductByCategory } from "../../../actions/control-action";
 import { useHistory } from "react-router-dom";
+import { productsURL } from "../../../constants/baseURL";
 import "./style.scss";
 
 function CategoryProduct(props) {
@@ -21,11 +22,11 @@ function CategoryProduct(props) {
     if (hasFilter) {
       setCategoryItem({ id: "", isActive: false });
       id.current = null;
-      history.push("/products");
+      history.push(productsURL);
     }
     if (id.current) {
       dispatch(getProductByCategory(id.current));
-      setCategoryItem({ id: id.current, isActive: true });
+      setCategoryItem({ id: +id.current, isActive: true });
     }
   }, [dispatch, hasFilter, history]);
 
@@ -37,7 +38,7 @@ function CategoryProduct(props) {
     });
 
     id.current = value.id;
-    history.push("/products?" + value.id);
+    history.push(productsURL + "?" + value.id);
   };
 
   const showCategory = (data) => {

@@ -13,7 +13,7 @@ function Login(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(user);
+
   useEffect(() => {
     if (!user.isLogin && user.errorLoginMessage) {
       message.warning(user.errorLoginMessage);

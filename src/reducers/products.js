@@ -25,7 +25,7 @@ let initialValue = {
 const myReducer = (state = initialValue, action) => {
   switch (action.type) {
     case GET_PRODUCT_LIST_SUCCESS:
-      return { ...state, listProduct: action.payload.data.data.reverse() };
+      return { ...state, listProduct: action.payload.data.data };
     case GET_PRODUCT_LIST_LATEST_SUCCESS:
       return { ...state, listProductLatest: action.payload.data.data };
 
@@ -42,7 +42,7 @@ const myReducer = (state = initialValue, action) => {
     case ADD_PRODUCT:
       return { ...state, isAddProductSuccess: false, messageAddProduct: "" };
     case ADD_PRODUCT_SUCCESS:
-      state.listProduct.unshift(action.payload.data);
+      state.listProduct.push(action.payload.data);
       return {
         ...state,
         isAddProductSuccess: true,

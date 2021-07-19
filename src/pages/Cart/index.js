@@ -1,17 +1,19 @@
 import {
+  Button,
+  Collapse,
+  Form,
+  Input,
   InputNumber,
   message,
+  Modal,
   Popconfirm,
+  Radio,
   Space,
   Table,
-  Radio,
-  Input,
-  Button,
-  Form,
-  Modal,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -21,10 +23,9 @@ import {
   updateQuantityCart,
 } from "../../actions/user";
 import ProductSeen from "../../components/ProductSeen";
-import history from "../../untils/history";
-import { useTranslation } from "react-i18next";
-import "./style.scss";
 import ShowBill from "./ShowBill";
+import "./style.scss";
+const { Panel } = Collapse;
 
 function CartPage(props) {
   const { t } = useTranslation();
@@ -45,6 +46,7 @@ function CartPage(props) {
   const [listOrder, setListOrder] = useState([]);
   const [totalMoneyListOrder, setTotalMoneyListOrder] = useState(0);
   const [disabledInput, setDisabledInput] = useState([]);
+
   const columns = [
     {
       title: `${t("cartPage.product")}`,
@@ -168,25 +170,33 @@ function CartPage(props) {
     setPaymnet(e.target.value);
   }
 
-  function onSubmitPayment(values) {
+  function openModalOrder() {
     if (user.isLogin) {
       if (listOrder.length === 0) {
         message.warning("Please chose a product!");
       } else {
-        dispatch(
-          sendListPayment({
-            idUser: user.id,
-            listPayment: listOrder,
-            ...values,
-          })
-        );
-        dispatch(deleteListCartOrdered(listOrder));
-        showModal();
-        message.success("Order success!");
+        setIsModalVisible(true);
       }
     } else {
-      history.push("/login");
+      message.warning("Please login!");
     }
+  }
+
+  function onSubmitPayment(values) {
+    dispatch(
+      sendListPayment({
+        idUser: user.id,
+        listPayment: listOrder,
+        typePayment: payment,
+        ...values,
+        address: values.address ? values.address : user.address,
+      })
+    );
+    setIsModalVisible(false);
+    dispatch(deleteListCartOrdered(listOrder));
+    setListOrder([]);
+    setTotalMoneyListOrder(0);
+    message.success("Order success!");
   }
 
   function handleTableChange(pagination) {
@@ -198,18 +208,8 @@ function CartPage(props) {
     });
   }
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-    history.push("/products");
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
-    setListOrder([]);
   };
 
   return (
@@ -241,7 +241,7 @@ function CartPage(props) {
                   totalMoneyListOrder={totalMoneyListOrder}
                 />
               </ul>
-              <Form onFinish={onSubmitPayment}>
+              <Form onFinish={openModalOrder}>
                 <Form.Item
                   name="payment"
                   label={t("cartPage.typePayment")}
@@ -252,28 +252,13 @@ function CartPage(props) {
                     },
                   ]}
                 >
-                  <Radio.Group onChange={onChangePayment} value={payment}>
+                  <Radio.Group onChange={onChangePayment}>
                     <Space direction="vertical">
                       <Radio value={"Payment on delivery"}>
                         {t("cartPage.chekbox1")}
                       </Radio>
                       <Radio value={"Payment by card"}>
                         {t("cartPage.chekbox2")}
-                        {payment === "Payment by card" ? (
-                          <Form.Item
-                            name="numberCart"
-                            rules={[
-                              {
-                                required: true,
-                                message: `${t(
-                                  "cartPage.paymentRequiredInput"
-                                )}`,
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter your number cart" />
-                          </Form.Item>
-                        ) : null}
                       </Radio>
                     </Space>
                   </Radio.Group>
@@ -283,42 +268,92 @@ function CartPage(props) {
                   htmlType="submit"
                   className="btn btn--primary btn--payment"
                 >
-                  {t("cartPage.buttonSummit")}
+                  Process Order
                 </Button>
-                <Modal
-                  title="Order successfully!"
-                  visible={isModalVisible}
-                  onOk={handleOk}
-                  onCancel={handleCancel}
-                  okText={"Continue shopping"}
-                  cancelText={"Close"}
-                >
-                  <ul className="cart-page__order__list">
-                    <ShowBill
-                      listOrder={listOrder}
-                      totalMoneyListOrder={totalMoneyListOrder}
-                    />
-                    <li className="cart-page__order__list__item">
-                      <span className="color-dark">
-                        {t("cartPage.Address")}:{" "}
-                      </span>
-                      <span className="color-dark">{user.address}</span>
-                    </li>
-                    <li className="cart-page__order__list__item">
-                      <span className="color-dark">
-                        {t("cartPage.phone")}:{" "}
-                      </span>
-                      <span className="color-dark">{0 + user.phone}</span>
-                    </li>
-                    <li className="cart-page__order__list__item">
-                      <span className="color-dark">
-                        {t("cartPage.typePayment")}:{" "}
-                      </span>
-                      <span className="color-dark">{payment}</span>
-                    </li>
-                  </ul>
-                </Modal>
               </Form>
+              <Modal
+                title="Your Order"
+                visible={isModalVisible}
+                onCancel={handleCancel}
+                footer={""}
+                width={800}
+              >
+                <div className="cart-page__modal">
+                  <Row>
+                    <Col xl={6} sm={12}>
+                      <ShowBill
+                        listOrder={listOrder}
+                        totalMoneyListOrder={totalMoneyListOrder}
+                      />
+                    </Col>
+                    <Col xl={6} sm={12}>
+                      <Form labelCol={{ span: 8 }} onFinish={onSubmitPayment}>
+                        <Collapse
+                          expandIcon={() => (
+                            <i className="fas fa-map-marker-alt"></i>
+                          )}
+                          ghost={true}
+                        >
+                          <Panel header="Change address ?" key="1">
+                            <Form.Item label="Address New" name="address">
+                              <Input />
+                            </Form.Item>
+                          </Panel>
+                        </Collapse>
+                        <li className="cart-page__order__list__item">
+                          <span className="color-dark">
+                            {t("cartPage.typePayment")}:{" "}
+                          </span>
+                          <span className="color-dark">{payment}</span>
+                        </li>
+                        {payment === "Payment by card" ? (
+                          <>
+                            <h2>Information Card</h2>
+                            <Form.Item
+                              label="Number Card"
+                              name="numberCard"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: `${t(
+                                    "cartPage.paymentRequiredInput"
+                                  )}`,
+                                },
+                              ]}
+                            >
+                              <Input placeholder="Enter your number cart" />
+                            </Form.Item>
+                            <Form.Item
+                              label="Name bank"
+                              name="nameBank"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: `${t("cartPage.bankRequiredInput")}`,
+                                },
+                              ]}
+                            >
+                              <Input placeholder="Enter your number cart" />
+                            </Form.Item>
+                          </>
+                        ) : null}
+                        <div className="cart-page__modal__btn">
+                          <Button onClick={handleCancel} className="btn--close">
+                            Close
+                          </Button>
+                          <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="btn btn--primary btn--payment"
+                          >
+                            Submit Order
+                          </Button>
+                        </div>
+                      </Form>
+                    </Col>
+                  </Row>
+                </div>
+              </Modal>
             </div>
           </Col>
         </Row>

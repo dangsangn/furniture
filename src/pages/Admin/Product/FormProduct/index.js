@@ -119,7 +119,7 @@ function FormProduct(props) {
       discount: values.discount,
       link_img: [values.image1, values.image2, values.image3, values.image4],
       name: values.name,
-      price: 12,
+      price: values.price,
       size: values.size.map((item) => +item),
     };
 
@@ -164,10 +164,10 @@ function FormProduct(props) {
             ]}
           >
             <Select placeholder="select your category">
-              <Option value="1">GIÀY NIKE</Option>
-              <Option value="2">GIÀY ADIDAS</Option>
-              <Option value="3">GIÀY VANS</Option>
-              <Option value="4">GIÀY THỜI TRANG</Option>
+              <Option value={1}>GIÀY THỜI TRANG</Option>
+              <Option value={2}>GIÀY NIKE</Option>
+              <Option value={3}>GIÀY ADIDAS</Option>
+              <Option value={4}>GIÀY VANS</Option>
             </Select>
           </Form.Item>
           <Form.Item
