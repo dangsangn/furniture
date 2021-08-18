@@ -11,7 +11,7 @@ import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../actions/product";
 import ProductList from "../../components/ProductList";
-import PaginationContainer from "../../components/Pagination";
+import Pagination from "../../components/Pagination";
 import {
   clearFilters,
   getPageLimitNumber,
@@ -126,7 +126,7 @@ function Products(props) {
             <div className="products-page__list">
               <ProductList data={listProduct} xl={4} />
             </div>
-            <PaginationContainer />
+            <Pagination />
           </Col>
         </Row>
         <Row>
