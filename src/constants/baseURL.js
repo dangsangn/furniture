@@ -1,4 +1,4 @@
-export const baseURL = "http://localhost:3333/api";
+export const baseURL = "https://json-server-project2-sun.herokuapp.com/api";
 
 export const homeURL = "/";
 export const productsURL = "/products";
