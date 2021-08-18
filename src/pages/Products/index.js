@@ -11,7 +11,7 @@ import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../actions/product";
 import ProductList from "../../components/ProductList";
-import Pagination from "../../components/Pagination";
+import Pagination from "../../components/pagination";
 import {
   clearFilters,
   getPageLimitNumber,
