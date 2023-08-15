@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getIdProduct } from "../../actions/product";
+// import { getIdProduct } from "../../actions/product";
 import history from "../../untils/history";
 import "./style.scss";
 
@@ -9,7 +9,7 @@ function BoxSearch(props) {
   const { keySearch, inputSearch } = props;
   const [searchWord, setSearchWord] = useState("");
   const listProduct = useSelector(
-    (state) => state.products.listProductBySearch
+    (state) => state.products?.listProductBySearch
   );
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ function BoxSearch(props) {
 
   const goToPageDetail = (id) => {
     history.push("/products/" + id);
-    dispatch(getIdProduct(id));
+    // dispatch(getIdProduct(id));
     if (history.location.pathname.indexOf("/products/") !== -1) {
       setSearchWord("");
       inputSearch.classList.remove("show");
@@ -31,7 +31,7 @@ function BoxSearch(props) {
       {searchWord?.length > 0 ? (
         <Container>
           <div className="box-search">
-            {listProduct.length > 0
+            {(listProduct ||[]).length > 0
               ? listProduct.slice(0, 5).map((item) => (
                   <div
                     key={item.id}

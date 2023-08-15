@@ -1,116 +1,120 @@
-import React, { useEffect } from "react";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import "swiper/components/navigation/navigation.min.css";
-import "swiper/components/pagination/pagination.min.css";
-import SwiperCore, { Navigation, Pagination } from "swiper/core";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper.min.css";
-import { getCategory } from "../../actions/category";
-import {
-  getProductListComing,
-  getProductListLates,
-} from "../../actions/product";
-import Categories from "../../components/Categories";
-import ProductList from "../../components/ProductList";
-import { featuteData, listBrandImage } from "../../data";
-import ImgClock from "./../../assets/images/banner/clock.webp";
-import CountdownTime from "./Countdown";
-import Slider from "./Slider";
-import "./style.scss";
-SwiperCore.use([Pagination, Navigation]);
+import React, { useEffect, useMemo, useState } from "react"
+import Col from "react-bootstrap/Col"
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row"
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
+import "swiper/components/navigation/navigation.min.css"
+import "swiper/components/pagination/pagination.min.css"
+import "swiper/swiper.min.css"
+import { fetchCategory } from "../../apis/category"
+import { fetchProducts } from "../../apis/product"
+import ProductList from "../../components/ProductList"
+import { listBrandImage } from "../../data"
+import ImgClock from "./../../assets/images/banner/clock.webp"
+import CountdownTime from "./Countdown"
+import "./style.scss"
+import { useLocation, useHistory } from "react-router-dom"
+import queryString from "query-string"
+import { Pagination } from "antd"
 
-function HomePage(props) {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products);
+function HomePage() {
+  const { t } = useTranslation()
+  const [products, setProducts] = useState([])
+  const [meta, setMeta] = useState({ page: 1, total: 0 })
+  const [category, setCategory] = useState([])
+  const params = useLocation()
+  const history = useHistory()
+  const query = useMemo(
+    () => queryString.parse(params?.search),
+    [params?.search]
+  )
+  console.log("params?.search:", query)
 
   useEffect(() => {
-    dispatch(getProductListLates());
-    dispatch(getProductListComing());
-    dispatch(getCategory());
-  }, [dispatch]);
+    ;(async () => {
+      try {
+        const resCategory = await fetchCategory({ limit: 30 })
+        setCategory(resCategory?.data?.data?.items)
+      } catch (error) {
+        console.log("error:", error)
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const resProduct = await fetchProducts({
+          page: query?.page || 1,
+          limit: 12,
+          cat: query?.category,
+        })
+        console.log("resProduct:", resProduct)
+        setProducts(resProduct?.data?.data?.items)
+        setMeta((pre) => ({
+          ...pre,
+          page: resProduct?.data?.data?.meta?.currentPage,
+          total: resProduct?.data?.data?.meta?.totalItems,
+        }))
+      } catch (error) {
+        console.log("error:", error)
+      }
+    })()
+  }, [query])
+
+  const onChange = (page) => {
+    console.log(page)
+    history.push(`?page=${page}`)
+  }
 
   return (
     <div className="page-home">
-      <Slider />
       <Container>
-        <section className="feature">
+        <div className="product-area__header my-10">
+          <h2 className="product-area__header__title">Danh mục sản phẩm</h2>
+        </div>
+        <section style={{ marginTop: "0" }} className="feature">
           <Row>
-            {featuteData.map((item, index) => {
+            {category.map((item, index) => {
               return (
                 <Col xl={3} sm={12} key={index}>
-                  <div className="feature__item">
-                    <div className="feature__item__icon">{item.icon}</div>
-                    <h3>{t(item.name)}</h3>
-                    <p>{t(item.desc)}</p>
-                  </div>
+                  <Link
+                    to={`?category=${item.id}`}
+                    className="block px-10 py-6 text-center border-2 border-solid border-transparent hover:border-orange-300"
+                  >
+                    <h3 className="text-3xl">{t(item.name)}</h3>
+                    <p className="text-gray-400">{t(item.description)}</p>
+                  </Link>
                 </Col>
-              );
+              )
             })}
           </Row>
         </section>
       </Container>
-      <section className="category-area">
-        <Container>
-          <Row>
-            <Col xl={8}>
-              <Categories />
-            </Col>
-            <Col xl={4}>
-              <div className="category-area__clock">
-                <div className="overlay"></div>
-                <div className="category-area__clock__img">
-                  <img src={ImgClock} alt="imgClock" />
-                </div>
-                <div className="category-area__clock__link">
-                  <Link to="/products">{t("category.gotoshop")}</Link>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
       <section className="product-area">
         <Container>
-          <Swiper
-            slidesPerView={1}
-            spaceBetween={30}
-            loop={true}
-            navigation={true}
-            className="mySwiper"
-          >
-            <SwiperSlide className="product-area__slider">
-              <div className="product-area__header">
-                <h2 className="product-area__header__title">
-                  {t("carousel.titleProduct1")}
-                </h2>
-                <p className="product-area__header__desc">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Molestias possimus totam culpa. Nulla, dolores repellat ipsa
-                  sunt voluptates quidem voluptatum.
-                </p>
-              </div>
-              <ProductList data={products.listProductComing} xl={3} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="product-area__header">
-                <h2 className="product-area__header__title">
-                  {t("carousel.titleProduct2")}
-                </h2>
-                <p className="product-area__header__desc">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Molestias possimus totam culpa. Nulla, dolores repellat ipsa
-                  sunt voluptates quidem voluptatum.
-                </p>
-              </div>
-              <ProductList data={products.listProductLatest} xl={3} />
-            </SwiperSlide>
-          </Swiper>
+          <div className="product-area__header">
+            <h2
+              style={{ marginBottom: "12px" }}
+              className="product-area__header__title"
+            >
+              Danh sách sản phẩm
+            </h2>
+            <p className="product-area__header__desc">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              possimus totam culpa. Nulla, dolores repellat ipsa sunt voluptates
+              quidem voluptatum.
+            </p>
+          </div>
+          <ProductList data={products} xl={3} />
+          <div className="flex justify-center">
+            <Pagination
+              current={meta.page}
+              onChange={onChange}
+              total={meta.total}
+            />
+          </div>
         </Container>
       </section>
 
@@ -153,13 +157,13 @@ function HomePage(props) {
                     <img src={item} alt="imgband" />
                   </div>
                 </Col>
-              );
+              )
             })}
           </Row>
         </Container>
       </section>
     </div>
-  );
+  )
 }
 
-export default HomePage;
+export default HomePage

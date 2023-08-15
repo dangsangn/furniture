@@ -6,8 +6,8 @@ import Loading from "../Loading";
 import { useSelector } from "react-redux";
 
 function showCategory(data) {
-  let result = [];
-  if (data.length > 0) {
+  let result = []
+  if ((data || []).length > 0) {
     for (let i = 0; i < data.length; i += 4) {
       result.push(
         <Row key={i}>
@@ -24,20 +24,20 @@ function showCategory(data) {
             <CategoryItem data={data[i + 3]} />
           </Col>
         </Row>
-      );
+      )
     }
   }
-  return result;
+  return result
 }
 
 function Categories(props) {
-  const category = useSelector((state) => state.category);
-  const showLoading = useSelector((state) => state.ui.showLoading);
+  const category = useSelector((state) => state.category)
+  const showLoading = useSelector((state) => state.ui?.showLoading)
   return (
     <div className="category">
       {showLoading ? <Loading /> : showCategory(category)}
     </div>
-  );
+  )
 }
 
 export default Categories;

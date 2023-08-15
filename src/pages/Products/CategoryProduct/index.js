@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategory } from "../../../actions/category";
-import { getProductByCategory } from "../../../actions/control-action";
+// import { getCategory } from "../../../actions/category";
+// import { getProductByCategory } from "../../../actions/control-action";
 import { useHistory } from "react-router-dom";
 import { productsURL } from "../../../constants/baseURL";
 import "./style.scss";
@@ -18,20 +18,20 @@ function CategoryProduct(props) {
   });
 
   useEffect(() => {
-    dispatch(getCategory());
+    // dispatch(getCategory());
     if (hasFilter) {
       setCategoryItem({ id: "", isActive: false });
       id.current = null;
       history.push(productsURL);
     }
     if (id.current) {
-      dispatch(getProductByCategory(id.current));
+      // dispatch(getProductByCategory(id.current));
       setCategoryItem({ id: +id.current, isActive: true });
     }
   }, [dispatch, hasFilter, history]);
 
   const handleCheckCategory = (value) => {
-    dispatch(getProductByCategory(value.id));
+    // dispatch(getProductByCategory(value.id));
     setCategoryItem({
       id: value.id,
       isActive: true,
@@ -41,7 +41,7 @@ function CategoryProduct(props) {
     history.push(productsURL + "?" + value.id);
   };
 
-  const showCategory = (data) => {
+  const showCategory = (data = []) => {
     return data.map((item) => {
       return (
         <li
@@ -55,9 +55,9 @@ function CategoryProduct(props) {
         >
           {item.name}
         </li>
-      );
-    });
-  };
+      )
+    })
+  }
 
   return <ul className="products-page__category">{showCategory(category)}</ul>;
 }

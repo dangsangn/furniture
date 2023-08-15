@@ -16,12 +16,12 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  deleteCartItem,
-  deleteListCartOrdered,
-  sendListPayment,
-  updateQuantityCart,
-} from "../../actions/user";
+// import {
+//   deleteCartItem,
+//   deleteListCartOrdered,
+//   sendListPayment,
+//   updateQuantityCart,
+// } from "../../actions/user";
 import ProductSeen from "../../components/ProductSeen";
 import ShowBill from "./ShowBill";
 import "./style.scss";
@@ -37,7 +37,7 @@ function CartPage(props) {
     style: "currency",
     currency: "VND",
   });
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [payment, setPaymnet] = useState("Payment on delivery");
   const [pagination, setPagination] = useState({
     current: 1,
@@ -158,11 +158,11 @@ function CartPage(props) {
   };
 
   function updateQuantityCartItem(value, id, color, size) {
-    dispatch(updateQuantityCart(value, id, color, size));
+    // dispatch(updateQuantityCart(value, id, color, size));
   }
 
   function handleDeleteCartItem(id) {
-    dispatch(deleteCartItem(id));
+    // dispatch(deleteCartItem(id));
     message.success("Delete product successfully!");
   }
 
@@ -183,17 +183,17 @@ function CartPage(props) {
   }
 
   function onSubmitPayment(values) {
-    dispatch(
-      sendListPayment({
-        idUser: user.id,
-        listPayment: listOrder,
-        typePayment: payment,
-        ...values,
-        address: values.address ? values.address : user.address,
-      })
-    );
+    // dispatch(
+    //   sendListPayment({
+    //     idUser: user.id,
+    //     listPayment: listOrder,
+    //     typePayment: payment,
+    //     ...values,
+    //     address: values.address ? values.address : user.address,
+    //   })
+    // );
     setIsModalVisible(false);
-    dispatch(deleteListCartOrdered(listOrder));
+    // dispatch(deleteListCartOrdered(listOrder));
     setListOrder([]);
     setTotalMoneyListOrder(0);
     message.success("Order success!");

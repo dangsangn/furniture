@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getListPaymentUser,
-  getProfileUserSuccess,
-  updateProfileUser,
-} from "../../actions/user";
+// import {
+//   getListPaymentUser,
+//   getProfileUserSuccess,
+//   updateProfileUser,
+// } from "../../actions/user";
 import { homeURL } from "../../constants/baseURL";
 import history from "../../untils/history";
 import ListOrdered from "./ListOrdered";
@@ -63,18 +63,18 @@ function Profile(props) {
       fullName: user?.fullName,
       avatar: user?.avatar,
     });
-    dispatch(getListPaymentUser(user.id));
+    // dispatch(getListPaymentUser(user.id));
     if (!user.isUpdated && user.errorUpdateProfileMessage) {
       message.warning(user.errorUpdateProfileMessage);
     }
     if (user.isUpdated && user.messageUpdateSuccess) {
       message.success("Update success");
-      dispatch(getProfileUserSuccess({ messageUpdateSuccess: "" }));
+      // dispatch(getProfileUserSuccess({ messageUpdateSuccess: "" }));
     }
   }, [dispatch, form, user, token]);
 
   const onFinish = (values) => {
-    dispatch(updateProfileUser({ data: values, idUser: user.id }));
+    // dispatch(updateProfileUser({ data: values, idUser: user.id }));
   };
 
   const prefixSelector = (

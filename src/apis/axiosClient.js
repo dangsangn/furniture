@@ -27,17 +27,17 @@ axiosClient.interceptors.response.use(
 );
 
 function authHeaders() {
-  const token = localStorage.getItem("authentication_token");
+  // const token = localStorage.getItem("authentication_token");
   const headers = {
-    Authorization: token,
+    // Authorization: token,
     Accept: "application/json",
     "Accept-Language": "vi",
-  };
-  return headers;
+  }
+  return headers
 }
 
-export async function authGet(url) {
-  return await axiosClient.get(url, { headers: authHeaders() });
+export async function authGet(url, params) {
+  return await axiosClient.get(url, { params }, { headers: authHeaders() })
 }
 
 export async function authPut(url, params = {}) {

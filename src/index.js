@@ -9,8 +9,8 @@ import "antd/dist/antd.css";
 import i18n from "./i18n";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
-import configureStore from "./redux/storeConfigure";
-const store = configureStore();
+import { store } from "./store"
+import "./index.css"
 
 ReactDOM.render(
   <React.StrictMode>

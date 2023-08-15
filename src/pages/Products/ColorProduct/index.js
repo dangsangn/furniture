@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getColorProduct } from "../../../actions/control-action";
+// import { getColorProduct } from "../../../actions/control-action";
 import "./style.scss";
 
 function ColorProduct(props) {
@@ -17,14 +17,14 @@ function ColorProduct(props) {
       name: value,
       isActive: true,
     });
-    dispatch(getColorProduct(value));
+    // dispatch(getColorProduct(value));
   };
 
   useEffect(() => {
     hasFilter && setColorItem({ name: "", isActive: false });
   }, [hasFilter]);
 
-  const showColor = (data) => {
+  const showColor = (data = []) => {
     return data.map((item, index) => {
       return (
         <li
@@ -36,9 +36,9 @@ function ColorProduct(props) {
               : `products-page__color__item products-page__color__item--${item}`
           }
         ></li>
-      );
-    });
-  };
+      )
+    })
+  }
 
   return <ul className="products-page__color">{showColor(data)}</ul>;
 }

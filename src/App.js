@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Router, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { getProfileUser } from "./actions/user";
+// import { getProfileUser } from "./actions/user";
 import ButtonToTop from "./components/ButtonToTop";
 import ScrollToTop from "./components/ScrollToTop";
 import AdminLayout from "./layouts/Admin/AdminLayout";
@@ -10,6 +10,7 @@ import UserLayout from "./layouts/User/UserLayout";
 import routersAdmin from "./routers/adminRouter";
 import routersUser from "./routers/userRouter";
 import "./style/styles.scss";
+
 import history from "./untils/history";
 
 function App(props) {
@@ -17,7 +18,7 @@ function App(props) {
   const token = JSON.parse(localStorage.getItem("authentication_token"));
 
   useEffect(() => {
-    token && dispatch(getProfileUser(token));
+    // token && dispatch(getProfileUser(token));
   }, [dispatch, token]);
 
   const showRouterUser = (routers) => {
@@ -50,13 +51,13 @@ function App(props) {
     <Router history={history}>
       <Switch>
         {showRouterUser(routersUser)}
-        {showRouterAmin(routersAdmin)}
+        {/* {showRouterAmin(routersAdmin)} */}
       </Switch>
       <ScrollToTop />
       <ToastContainer />
       <ButtonToTop />
     </Router>
-  );
+  )
 }
 
 export default App;

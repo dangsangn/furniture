@@ -2,10 +2,10 @@ import React from "react";
 import { Pagination } from "antd";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getPageLimitNumber,
-  getPageNumber,
-} from "../../actions/control-action";
+// import {
+//   getPageLimitNumber,
+//   getPageNumber,
+// } from "../../actions/control-action";
 
 function PaginationContainer(props) {
   const filters = useSelector((state) => state.filters);
@@ -13,11 +13,11 @@ function PaginationContainer(props) {
   const dispatch = useDispatch();
 
   function onShowSizeChange(current, pageSize) {
-    dispatch(getPageLimitNumber({ page: current, limit: pageSize }));
+    // dispatch(getPageLimitNumber({ page: current, limit: pageSize }));
   }
 
   function onChange(pageNumber) {
-    dispatch(getPageNumber(pageNumber));
+    // dispatch(getPageNumber(pageNumber));
     window.scrollTo({
       top: 100,
       left: 100,

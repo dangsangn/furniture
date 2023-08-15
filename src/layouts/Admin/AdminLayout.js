@@ -3,7 +3,7 @@ import Avatar from "antd/lib/avatar/avatar";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route } from "react-router-dom";
-import { userLogout } from "../../actions/user";
+// import { userLogout } from "../../actions/user";
 import history from "../../untils/history";
 import MenuAdmin from "./Menu";
 import "./style.scss";
@@ -15,7 +15,7 @@ function AdminLayout(props) {
 
   const handleLogout = () => {
     localStorage.removeItem("authentication_token");
-    dispatch(userLogout());
+    // dispatch(userLogout());
     history.push("/");
   };
 

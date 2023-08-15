@@ -7,19 +7,19 @@ import Loading from "./../Loading";
 import "./style.scss";
 import { useSelector } from "react-redux";
 
-const showProduct = (data, xl) => {
+const showProduct = (data = [], xl) => {
   return data.map((item) => {
     return (
       <Col xl={xl} key={item.id}>
         <ProductItem data={item} />
       </Col>
-    );
-  });
-};
+    )
+  })
+}
 
 function ProductList(props) {
-  const showLoading = useSelector((state) => state.ui.showLoading);
-  const { data, xl } = props;
+  const showLoading = useSelector((state) => state.ui?.showLoading)
+  const { data = [], xl } = props
   return (
     <>
       {showLoading ? (
@@ -36,7 +36,7 @@ function ProductList(props) {
         </Row>
       )}
     </>
-  );
+  )
 }
 
 export default ProductList;

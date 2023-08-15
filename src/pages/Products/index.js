@@ -9,48 +9,48 @@ import RatingProduct from "./RatingProduct";
 import { Select } from "antd";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductList } from "../../actions/product";
+// import { getProductList } from "../../actions/product";
 import ProductList from "../../components/ProductList";
 import Pagination from "../../components/pagination";
-import {
-  clearFilters,
-  getPageLimitNumber,
-  sortProduct,
-} from "../../actions/control-action";
+// import {
+//   clearFilters,
+//   getPageLimitNumber,
+//   sortProduct,
+// } from "../../actions/control-action";
 import { useTranslation } from "react-i18next";
 import { Button } from "antd";
 import ProductSeen from "../../components/ProductSeen";
 
 function Products(props) {
-  const { Option } = Select;
-  const { t } = useTranslation();
-  const filters = useSelector((state) => state.filters);
-  const hasFilter = filters.hasFilter;
-  const listProduct = useSelector((state) => state.products.listProduct);
-  const [onSort, setOnsort] = useState("Sort Default");
-  const [onPage, setOnPage] = useState("Show 6");
+  const { Option } = Select
+  const { t } = useTranslation()
+  const filters = useSelector((state) => state.filters)
+  const hasFilter = filters.hasFilter
+  const listProduct = useSelector((state) => state.products.listProduct)
+  const [onSort, setOnsort] = useState("Sort Default")
+  const [onPage, setOnPage] = useState("Show 6")
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductList(filters));
+    // dispatch(getProductList(filters));
     if (hasFilter) {
-      setOnsort("Sort Default");
-      dispatch(getPageLimitNumber({ limit: 6 }));
+      setOnsort("Sort Default")
+      // dispatch(getPageLimitNumber({ limit: 6 }));
     }
-  }, [dispatch, filters, hasFilter]);
+  }, [dispatch, filters, hasFilter])
 
   function onChangeSort(value) {
-    dispatch(sortProduct(value.split(" ")));
-    setOnsort(value);
+    // dispatch(sortProduct(value.split(" ")));
+    setOnsort(value)
   }
 
   function onChangeTotalItem(value) {
-    dispatch(getPageLimitNumber({ limit: +value }));
-    setOnPage(value);
+    // dispatch(getPageLimitNumber({ limit: +value }));
+    setOnPage(value)
   }
 
   function handleClearFilter() {
-    dispatch(clearFilters());
+    // dispatch(clearFilters());
   }
 
   return (
@@ -136,7 +136,7 @@ function Products(props) {
         </Row>
       </Container>
     </div>
-  );
+  )
 }
 
 export default Products;

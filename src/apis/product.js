@@ -11,14 +11,14 @@ export const fetchProductComing = () => {
 };
 
 export const fetchProducts = (params) => {
-  const url = `/products?${params}`;
-  return authGet(url);
-};
+  const url = `/products`
+  return authGet(url, params)
+}
 
-export const fetchProductDeatil = (id) => {
-  const url = `/products/${id}`;
-  return authGet(url);
-};
+export const fetchProductDetail = (id) => {
+  const url = `/products/${id}`
+  return authGet(url)
+}
 
 export const fetchProductsBySearch = (keySearch) => {
   const url = `/products?q=${keySearch}`;

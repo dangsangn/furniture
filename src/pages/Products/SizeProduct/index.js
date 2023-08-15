@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSizeProduct } from "../../../actions/control-action";
+// import { getSizeProduct } from "../../../actions/control-action";
 import "./style.scss";
 
 function SizeProduct(props) {
@@ -13,7 +13,7 @@ function SizeProduct(props) {
     isActive: false,
   });
   const handleCheckSize = (value) => {
-    dispatch(getSizeProduct(value));
+    // dispatch(getSizeProduct(value));
     setSizeItem({
       name: value,
       isActive: true,
@@ -24,7 +24,7 @@ function SizeProduct(props) {
     hasFilter && setSizeItem({ name: "", isActive: false });
   }, [hasFilter]);
 
-  const showSize = (data) => {
+  const showSize = (data = []) => {
     return data.map((item, index) => {
       return (
         <li
@@ -38,9 +38,9 @@ function SizeProduct(props) {
         >
           {item}
         </li>
-      );
-    });
-  };
+      )
+    })
+  }
 
   return <ul className="products-page__size">{showSize(data)}</ul>;
 }

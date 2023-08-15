@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRatingProduct } from "../../../actions/control-action";
+// import { getRatingProduct } from "../../../actions/control-action";
 import ShowStar from "./../../../components/ShowStar";
 import "./style.scss";
 
@@ -15,7 +15,7 @@ function RatingProduct(props) {
   });
 
   const handleCheckRating = (value) => {
-    dispatch(getRatingProduct(value));
+    // dispatch(getRatingProduct(value));
     setRatingItem({
       name: value,
       isActive: true,
@@ -26,7 +26,7 @@ function RatingProduct(props) {
     hasFilter && setRatingItem({ name: "", isActive: false });
   }, [hasFilter]);
 
-  const showRating = (data) => {
+  const showRating = (data = []) => {
     return data.map((item, index) => {
       return (
         <li
@@ -40,9 +40,9 @@ function RatingProduct(props) {
         >
           <ShowStar stars={item} />
         </li>
-      );
-    });
-  };
+      )
+    })
+  }
 
   return <ul className="products-page__rating">{showRating(data)}</ul>;
 }

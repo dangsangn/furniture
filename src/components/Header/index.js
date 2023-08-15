@@ -9,26 +9,26 @@ import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Dropdown, Button, Avatar } from "antd";
 import history from "../../untils/history";
-import { userLogout } from "../../actions/user";
+// import { userLogout } from "../../actions/user";
 import BoxSearch from "../BoxSearch";
-import { getKeySearch } from "../../actions/product";
+// import { getKeySearch } from "../../actions/product";
 
 function Header(props) {
   const { Option } = Select;
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
   const [keySearch, setKeySearch] = useState();
   const inputSearch = useRef(null);
   const handleLogout = () => {
     localStorage.removeItem("authentication_token");
-    dispatch(userLogout());
+    // dispatch(userLogout());
     history.push("/");
   };
 
   const handleSearchProduct = (e) => {
-    dispatch(getKeySearch(e.target.value));
+    // dispatch(getKeySearch(e.target.value));
     setKeySearch(e.target.value);
   };
 
@@ -76,7 +76,7 @@ function Header(props) {
               </Select>
             </div>
             <div className="header__top__sigup">
-              {user.isLogin ? (
+              {user?.isLogin ? (
                 <Dropdown
                   className="header__top__avatar"
                   overlay={menu}
@@ -121,7 +121,7 @@ function Header(props) {
               <Link to="/cart" className="header__cart">
                 <i className="fas fa-shopping-cart"></i>
                 <span className="header__cart__show-amount">
-                  {cart.reduce((total, item) => {
+                  {(cart||[]).reduce((total, item) => {
                     return total + item.quantity;
                   }, 0)}
                 </span>

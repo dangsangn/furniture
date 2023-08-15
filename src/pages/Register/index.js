@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { userRegister } from "../../actions/user";
+// import { userRegister } from "../../actions/user";
 import "./style.scss";
 const { Option } = Select;
 
@@ -43,7 +43,7 @@ const tailFormItemLayout = {
 };
 
 function Register(props) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const user = useSelector((state) => state.user);
@@ -56,7 +56,7 @@ function Register(props) {
   }, [user]);
 
   const onFinish = (values) => {
-    dispatch(userRegister(values));
+    // dispatch(userRegister(values));
   };
 
   const prefixSelector = (

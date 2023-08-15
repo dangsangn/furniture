@@ -11,13 +11,13 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  cleareMessageUser,
-  deleteUser,
-  getListUser,
-  searchUser,
-  updateProfileUser,
-} from "../../../actions/user";
+// import {
+//   cleareMessageUser,
+//   deleteUser,
+//   getListUser,
+//   searchUser,
+//   updateProfileUser,
+// } from "../../../actions/user";
 import "./style.scss";
 
 function UserAdminPage(props) {
@@ -29,49 +29,49 @@ function UserAdminPage(props) {
 
   useEffect(() => {
     if (user.isUpdated && user.messageUpdateSuccess) {
-      message.success("Update user success");
-      setIsModalVisible(false);
-      dispatch(cleareMessageUser());
+      message.success("Update user success")
+      setIsModalVisible(false)
+      // dispatch(cleareMessageUser());
     }
     if (!user.isUpdated && user.errorUpdateProfileMessage) {
-      message.error("Update user error");
-      dispatch(cleareMessageUser());
+      message.error("Update user error")
+      // dispatch(cleareMessageUser());
     }
     if (user.isDelete && user.messageDeleteUser === "success") {
-      message.success("Delete user success");
-      dispatch(cleareMessageUser());
+      message.success("Delete user success")
+      // dispatch(cleareMessageUser());
     }
     if (!user.isDelete && user.messageDeleteUser === "error") {
-      message.error("Delete user error");
-      dispatch(cleareMessageUser());
+      message.error("Delete user error")
+      // dispatch(cleareMessageUser());
     }
-  }, [dispatch, user]);
+  }, [dispatch, user])
 
   useEffect(() => {
-    dispatch(getListUser());
-  }, [dispatch]);
+    // dispatch(getListUser());
+  }, [dispatch])
 
   const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+    setIsModalVisible(false)
+  }
 
   function handleDeleteUser(value) {
-    dispatch(deleteUser(value.id));
+    // dispatch(deleteUser(value.id));
   }
 
   const handleEditUser = (values) => {
-    dispatch(updateProfileUser({ data: values, idUser: idUser }));
-  };
+    // dispatch(updateProfileUser({ data: values, idUser: idUser }));
+  }
 
   const opendFormUpdateUser = (value) => {
-    form.setFieldsValue(value);
-    setIdUser(value.id);
-    setIsModalVisible(true);
-  };
+    form.setFieldsValue(value)
+    setIdUser(value.id)
+    setIsModalVisible(true)
+  }
 
   const handleKeySearchUser = (e) => {
-    dispatch(searchUser(e.target.value));
-  };
+    // dispatch(searchUser(e.target.value));
+  }
 
   const columns = [
     {

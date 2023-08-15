@@ -11,14 +11,9 @@ import {
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addProduct,
-  cleareMessageProduct,
-  updateProduct,
-} from "../../../../actions/product";
-const CheckboxGroup = Checkbox.Group;
-const { Option } = Select;
+import { useDispatch, useSelector } from "react-redux"
+const CheckboxGroup = Checkbox.Group
+const { Option } = Select
 
 const formItemLayout = {
   labelCol: {
@@ -37,7 +32,7 @@ const formItemLayout = {
       span: 16,
     },
   },
-};
+}
 const tailFormItemLayout = {
   wrapperCol: {
     xs: {
@@ -49,15 +44,15 @@ const tailFormItemLayout = {
       offset: 8,
     },
   },
-};
-const color = ["red", "black", "white", "gray"];
-const sizes = ["38", "39", "49", "41", "42"];
+}
+const color = ["red", "black", "white", "gray"]
+const sizes = ["38", "39", "49", "41", "42"]
 
 function FormProduct(props) {
-  const { data, onCloseModal } = props;
-  const [form] = Form.useForm();
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products);
+  const { data, onCloseModal } = props
+  const [form] = Form.useForm()
+  const dispatch = useDispatch()
+  const products = useSelector((state) => state.products)
 
   useEffect(() => {
     if (data?.key) {
@@ -73,43 +68,43 @@ function FormProduct(props) {
         image4: data.image[3],
         color: data.color,
         size: data.size.map((item) => item + ""),
-      });
+      })
     } else {
-      form.resetFields();
+      form.resetFields()
     }
     if (
       products.isAddProductSuccess &&
       products.messageAddProduct === "success"
     ) {
-      message.success("Add product success");
-      onCloseModal();
-      form.resetFields();
-      dispatch(cleareMessageProduct());
+      message.success("Add product success")
+      onCloseModal()
+      form.resetFields()
+      // dispatch(cleareMessageProduct())
     }
     if (
       !products.isAddProductSuccess &&
       products.messageAddProduct === "error"
     ) {
-      message.error("Add product error");
-      dispatch(cleareMessageProduct());
+      message.error("Add product error")
+      // dispatch(cleareMessageProduct());
     }
     if (
       products.isUpdateProductSuccess &&
       products.messageUpdateProduct === "success"
     ) {
-      message.success("Update product success");
-      onCloseModal();
-      form.resetFields();
-      dispatch(cleareMessageProduct());
+      message.success("Update product success")
+      onCloseModal()
+      form.resetFields()
+      // dispatch(cleareMessageProduct());
     }
     if (
       !products.isUpdateProductSuccess &&
       products.messageUpdateProduct === "error"
     ) {
-      message.error("Add product error");
-      dispatch(cleareMessageProduct());
+      message.error("Add product error")
+      // dispatch(cleareMessageProduct())
     }
-  }, [dispatch, products, onCloseModal, form, data]);
+  }, [dispatch, products, onCloseModal, form, data])
 
   const onFinish = (values) => {
     const sendData = {
@@ -121,14 +116,8 @@ function FormProduct(props) {
       name: values.name,
       price: values.price,
       size: values.size.map((item) => +item),
-    };
-
-    if (data?.key) {
-      dispatch(updateProduct(data.key, sendData));
-    } else {
-      dispatch(addProduct(sendData));
     }
-  };
+  }
 
   return (
     <Form
@@ -289,7 +278,7 @@ function FormProduct(props) {
         </Button>
       </Form.Item>
     </Form>
-  );
+  )
 }
 
 export default FormProduct;

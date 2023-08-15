@@ -4,78 +4,57 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { getProductDetail } from "../../actions/product";
-import { addCartItem } from "../../actions/user";
-import ImgSizeShoe from "../../assets/images/size-shoe.jpg";
-import ProductSeen from "../../components/ProductSeen";
-import history from "../../untils/history";
-import ImageProduct from "./ImageProduct";
-import PostReview from "./PostReview";
-import ShowReview from "./ShowReview";
-import "./style.scss";
+import { useDispatch } from "react-redux"
+import { fetchProductDetail } from "../../apis/product"
+import ImgSizeShoe from "../../assets/images/size-shoe.jpg"
+import ProductSeen from "../../components/ProductSeen"
+import history from "../../untils/history"
+import "./style.scss"
 
 function DetailProduct(props) {
   let formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "VND",
-  });
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const productDetail = useSelector((state) => state.productDetail);
-  const [, setColor] = useState("");
-  const [, setSize] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const idProduct = history.location.pathname.slice(10);
+  })
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const [quantity, setQuantity] = useState(1)
+  const idProduct = history.location.pathname.slice(10)
+  const [productDetail, setProductDetail] = useState(null)
 
   useEffect(() => {
-    dispatch(getProductDetail(idProduct));
-  }, [dispatch, idProduct]);
+    ;(async () => {
+      try {
+        const resProductDetail = await fetchProductDetail(idProduct)
+        setProductDetail(resProductDetail?.data?.data)
+      } catch (error) {
+        console.log("error:", error)
+      }
+    })()
+  }, [dispatch, idProduct])
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
   const onChangeQuantity = (value) => {
-    setQuantity(value);
-  };
+    setQuantity(value)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    if (!Object.fromEntries(data).color) {
-      message.warning("Vui lòng chọn màu sắc!");
-    } else if (!Object.fromEntries(data).size) {
-      message.warning("Vui lòng chọn kích cỡ!");
-    } else if (
-      !Object.fromEntries(data).color &&
-      !Object.fromEntries(data).size
-    ) {
-      message.warning("Vui lòng chọn kích thước và màu sắc!");
-    } else {
-      const sendData = {
-        id: productDetail.id,
-        name: productDetail.name,
-        image: productDetail.link_img[0],
-        price:
-          productDetail.price -
-          (productDetail.price * productDetail.discount) / 100,
-        ...Object.fromEntries(data),
-        quantity: +Object.fromEntries(data).quantity,
-        size: +Object.fromEntries(data).size,
-      };
-      dispatch(addCartItem(sendData));
-      message.success("Add product successfully!");
-    }
-  };
+    e.preventDefault()
+    const data = new FormData(e.target)
+
+    // const sendData = {
+    //   id: productDetail?.id,
+    //   name: productDetail?.name,
+    //   image: productDetail?.link_img[0],
+    //   price:
+    //     productDetail?.price -
+    //     (productDetail?.price * productDetail?.discount) / 100,
+    //   ...Object.fromEntries(data),
+    //   quantity: +Object.fromEntries(data).quantity,
+    //   size: +Object.fromEntries(data).size,
+
+    // }
+    message.success("Add product successfully!")
+  }
 
   return (
     <>
@@ -83,94 +62,47 @@ function DetailProduct(props) {
         <Container>
           <Row>
             <Col xl={7} sm={12}>
-              <ImageProduct images={productDetail.link_img} />
+              <img
+                className="h-[500px]"
+                src={productDetail?.imageUrl}
+                placeholder={productDetail?.name}
+              />
             </Col>
             <Col xl={5} sm={12}>
               <div className="detail-product__info">
                 <h2 className="detail-product__info__header">
-                  {productDetail.name}
+                  {productDetail?.name}
                 </h2>
                 <p className="detail-product__info__desc">
-                  {productDetail.description}
+                  {productDetail?.description}
+                </p>
+                <p className="text-3xl my-[20px]">
+                  {productDetail?.isActive ? (
+                    <span className="text-green-600">Còn hàng</span>
+                  ) : (
+                    <span className="text-red-700">Hết hàng</span>
+                  )}
                 </p>
                 <div className="detail-product__info__price">
-                  <del>{formatter.format(productDetail.price)}</del>
-                  <span>
-                    {formatter.format(
-                      productDetail.price -
-                        (productDetail.price * productDetail.discount) / 100
-                    )}
-                  </span>
+                  <span>{formatter.format(productDetail?.price)}</span>
                 </div>
                 <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                    <h3>{t("detailProduct.color")}</h3>
-                    {productDetail.color.map((item, index) => {
-                      return (
-                        <React.Fragment key={index}>
-                          <input
-                            id={`color-radio--${item}`}
-                            type="radio"
-                            name="color"
-                            value={item}
-                            onChange={(e) => setColor(e.target.value)}
-                          ></input>
-                          <label
-                            style={{ backgroundColor: item }}
-                            htmlFor={`color-radio--${item}`}
-                            className={`color-radio color-radio--${item}`}
-                          ></label>
-                        </React.Fragment>
-                      );
-                    })}
-                  </div>
-                  <div className="form-group">
-                    <h3>{t("productDetail.size")}</h3>
-                    {productDetail.size.map((item, index) => {
-                      return (
-                        <React.Fragment key={index}>
-                          <input
-                            id={`size-radio--${item}`}
-                            type="radio"
-                            name="size"
-                            value={item}
-                            onChange={(e) => setSize(e.target.value)}
-                          ></input>
-                          <label
-                            htmlFor={`size-radio--${item}`}
-                            className="size-radio"
-                          >
-                            {item}
-                          </label>
-                        </React.Fragment>
-                      );
-                    })}
-                  </div>
-                  <div className="form-group">
-                    <h3>{t("productDetail.quantity")} </h3>
+                  <div className="form-group flex gap-[16px] items-center">
                     <div className="detail-product__container-guide-shoe">
                       <InputNumber
                         min={1}
-                        max={10}
+                        max={productDetail?.qty}
                         name="quantity"
                         value={quantity}
                         onChange={onChangeQuantity}
+                        placeholder="Nhập số lượng"
+                        className="w-[200px]"
                       />
-                      <Button onClick={showModal} className="btn--guide-shoe">
-                        {t("button.guide")}
-                        <i className="fas fa-external-link-alt"></i>
-                      </Button>
-                      <Modal
-                        title="Hướng dẫn chọn size giày"
-                        width={800}
-                        style={{ top: 20 }}
-                        visible={isModalVisible}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                      >
-                        <img src={ImgSizeShoe} alt="img shoe" />
-                      </Modal>
                     </div>
+                    <h3>
+                      (Số hàng có sẵn: {productDetail?.qty}
+                      {productDetail?.unit} )
+                    </h3>
                   </div>
                   <div>
                     <button
@@ -184,19 +116,6 @@ function DetailProduct(props) {
               </div>
             </Col>
           </Row>
-          <div className="detail-product__review mt-50">
-            <Row>
-              <Col xl={6} sm={12}>
-                <div className="detail-product__review__show">
-                  <h2>{t("productDetail.review")}</h2>
-                  <ShowReview idProduct={productDetail.id} />
-                </div>
-              </Col>
-              <Col xl={6} sm={12}>
-                <PostReview idProduct={productDetail.id} />
-              </Col>
-            </Row>
-          </div>
         </Container>
       </div>
       <Container>
@@ -207,7 +126,7 @@ function DetailProduct(props) {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
 export default DetailProduct;

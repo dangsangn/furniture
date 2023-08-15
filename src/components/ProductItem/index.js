@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import history from "../../untils/history";
 import ShowStar from "./../ShowStar";
 import { useDispatch } from "react-redux";
-import { addCartItem } from "../../actions/user";
+// import { addCartItem } from "../../actions/user";
 import { message } from "antd";
-import { getIdProduct } from "../../actions/product";
+// import { getIdProduct } from "../../actions/product";
 
 function ProductItem(props) {
   const { data } = props;
@@ -18,11 +18,11 @@ function ProductItem(props) {
   const { t } = useTranslation();
 
   const goToPageDetail = () => {
-    dispatch(getIdProduct(data.id));
-    history.push("/products/" + data.id);
+    // dispatch(getIdProduct(data?.id));
+    history.push("/products/" + data?.id);
     let productsSeen = JSON.parse(sessionStorage.getItem("products_seen"));
     if (productsSeen) {
-      const index = productsSeen.findIndex((item) => item.id === data.id);
+      const index = productsSeen.findIndex((item) => item.id === data?.id);
       index === -1 && productsSeen.push(data);
     } else {
       productsSeen = [];
@@ -33,36 +33,30 @@ function ProductItem(props) {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    dispatch(
-      addCartItem({
-        id: data.id,
-        name: data.name,
-        image: data.link_img[0],
-        price: data.price - (data.price * data.discount) / 100,
-        color: data.color[0],
-        quantity: 1,
-        size: data.size[0],
-      })
-    );
+    // dispatch(
+    //   addCartItem({
+    //     id: data?.id,
+    //     name: data?.name,
+    //     image: data?.link_img[0],
+    //     price: data?.price - (data?.price * data?.discount) / 100,
+    //     color: data?.color[0],
+    //     quantity: 1,
+    //     size: data?.size[0],
+    //   })
+    // );
     message.success("Add product to cart successfully!");
   };
 
   return (
     <div onClick={goToPageDetail} className="product-item">
       <div className="product-item__img">
-        <img src={data?.link_img[0]} alt={data?.name} />
+        <img src={data?.imageUrl} alt={data?.name} />
       </div>
       <div className="product-item__content">
         <h3>{data?.name}</h3>
         <div>
-          <ShowStar stars={data.stars} />
           <p className="product-item__content__price">
-            <span>
-              {formatter.format(
-                data.price - (data.price * data.discount) / 100
-              )}
-            </span>
-            <del>{formatter.format(data.price)}</del>
+            <span>{formatter.format(data?.price)}</span>
           </p>
           <div className="product-item__action">
             <span
@@ -73,7 +67,6 @@ function ProductItem(props) {
               <span className="hover-text">{t("button.addtocart")}</span>
             </span>
             <span
-              // to={"products/" + data.id}
               className=" social-info social-info--sm"
             >
               <i className="fas fa-arrows-alt"></i>
@@ -85,7 +78,7 @@ function ProductItem(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default ProductItem;
