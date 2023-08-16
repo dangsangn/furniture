@@ -1,22 +1,18 @@
+import { Pagination } from "antd"
+import queryString from "query-string"
 import React, { useEffect, useMemo, useState } from "react"
 import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { Link, useHistory, useLocation } from "react-router-dom"
 import "swiper/components/navigation/navigation.min.css"
 import "swiper/components/pagination/pagination.min.css"
 import "swiper/swiper.min.css"
 import { fetchCategory } from "../../apis/category"
 import { fetchProducts } from "../../apis/product"
 import ProductList from "../../components/ProductList"
-import { listBrandImage } from "../../data"
-import ImgClock from "./../../assets/images/banner/clock.webp"
-import CountdownTime from "./Countdown"
 import "./style.scss"
-import { useLocation, useHistory } from "react-router-dom"
-import queryString from "query-string"
-import { Pagination } from "antd"
 
 function HomePage() {
   const { t } = useTranslation()
@@ -29,7 +25,6 @@ function HomePage() {
     () => queryString.parse(params?.search),
     [params?.search]
   )
-  console.log("params?.search:", query)
 
   useEffect(() => {
     ;(async () => {
@@ -50,7 +45,6 @@ function HomePage() {
           limit: 12,
           cat: query?.category,
         })
-        console.log("resProduct:", resProduct)
         setProducts(resProduct?.data?.data?.items)
         setMeta((pre) => ({
           ...pre,
@@ -115,51 +109,6 @@ function HomePage() {
               total={meta.total}
             />
           </div>
-        </Container>
-      </section>
-
-      <section className="countdown-area">
-        <Container fluid={true}>
-          <Row noGutters>
-            <Col xl={6} sm={12}>
-              <div className="countdown-area__time">
-                <div className="countdown-area__time__content">
-                  <h2>{t("countDown.title")}</h2>
-                  <p>{t("countDown.desc")}</p>
-                  <CountdownTime />
-                  <Link to="/products" className="btn btn--primary">
-                    {t("button.shopNow")}
-                  </Link>
-                </div>
-              </div>
-            </Col>
-            <Col xl={6} sm={12}>
-              <div className="category-area__clock">
-                <div className="overlay"></div>
-                <div className="category-area__clock__img">
-                  <img src={ImgClock} alt="imgClock" />
-                </div>
-                <div className="category-area__clock__link">
-                  <a href="#1">{t("category.gotoshop")}</a>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-      <section className="brand-area">
-        <Container>
-          <Row>
-            {listBrandImage.map((item, index) => {
-              return (
-                <Col key={index}>
-                  <div className="brand-area__item">
-                    <img src={item} alt="imgband" />
-                  </div>
-                </Col>
-              )
-            })}
-          </Row>
         </Container>
       </section>
     </div>

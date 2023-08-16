@@ -1,60 +1,61 @@
 import {
   Button,
-  Collapse,
   Form,
   Input,
   InputNumber,
   message,
-  Modal,
   Popconfirm,
-  Radio,
   Space,
   Table,
-} from "antd";
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-// import {
-//   deleteCartItem,
-//   deleteListCartOrdered,
-//   sendListPayment,
-//   updateQuantityCart,
-// } from "../../actions/user";
-import ProductSeen from "../../components/ProductSeen";
-import ShowBill from "./ShowBill";
-import "./style.scss";
-const { Panel } = Collapse;
+} from "antd"
+import React, { useEffect, useState } from "react"
+import { Col, Container, Row } from "react-bootstrap"
+import { useTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { checkoutSendOTP, checkoutVerify, placeOrder } from "../../apis/user"
+import ProductSeen from "../../components/ProductSeen"
+import { deleteCart, updateCart } from "../../store/cart"
+import history from "../../untils/history"
+import ShowBill from "./ShowBill"
+import "./style.scss"
 
-function CartPage(props) {
-  const { t } = useTranslation();
-  const cart = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.user);
-  const [data, setData] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "VND",
-  });
-  // const dispatch = useDispatch();
-  const [payment, setPaymnet] = useState("Payment on delivery");
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "VND",
+})
+function CartPage() {
+  const { t } = useTranslation()
+  const cart = useSelector((state) => state?.cart)
+  const [data, setData] = useState([])
+  const dispatch = useDispatch()
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 4,
-  });
-  const [listOrder, setListOrder] = useState([]);
-  const [totalMoneyListOrder, setTotalMoneyListOrder] = useState(0);
-  const [disabledInput, setDisabledInput] = useState([]);
+  })
+  const [listOrder, setListOrder] = useState([])
+  const [totalMoneyListOrder, setTotalMoneyListOrder] = useState(0)
+  const [infoUser, setInfoUser] = useState({
+    email: "",
+    code: "",
+    name: "",
+    phone: "",
+    address: "",
+    listOrder: [],
+  })
 
   const columns = [
     {
       title: `${t("cartPage.product")}`,
       dataIndex: "product",
-      render: ({ id, img, name, color, size }) => (
+      render: ({ id, img, name }) => (
         <div className="product-info-cart">
-          <div className="product-info-cart__img">
-            <img src={img} alt={name} />
+          <div className="product-info-cart__img mr-10">
+            <img
+              className="w-[100px] h-[100px] object-cover"
+              src={img}
+              alt={name}
+            />
           </div>
           <div className="product-info-cart__content">
             <Link
@@ -63,14 +64,6 @@ function CartPage(props) {
             >
               {name}
             </Link>
-            <div>
-              <span className="product-info-cart__content__color">
-                {t("cartPage.color")} {color}
-              </span>
-              <span>
-                {t("cartPage.size")} {size}
-              </span>
-            </div>
           </div>
         </div>
       ),
@@ -82,18 +75,20 @@ function CartPage(props) {
     },
     {
       title: `${t("cartPage.quantity")}`,
-      dataIndex: "quantity",
-      render: ({ id, quantity, color, size }) => (
-        <InputNumber
-          disabled={disabledInput.includes(id + color + size) ? true : false}
-          min={1}
-          max={10}
-          defaultValue={quantity}
-          onChange={(value) => {
-            updateQuantityCartItem(id, value, color, size);
-          }}
-        />
-      ),
+      dataIndex: "order",
+      render: ({ index, order, quantity }) => {
+        return (
+          <InputNumber
+            // disabled={disabledInput.includes(id + color + size) ? true : false}
+            min={1}
+            max={quantity}
+            defaultValue={order}
+            onChange={(value) => {
+              updateQuantityCartItem({ index, order: value })
+            }}
+          />
+        )
+      },
       colSpan: 1,
     },
     {
@@ -105,12 +100,12 @@ function CartPage(props) {
       title: `${t("cartPage.action")}`,
       key: "action",
       dataIndex: "action",
-      render: (id) => (
+      render: (index) => (
         <Space size="middle">
           <Popconfirm
             title={t("cartPage.messageDeleteProduct")}
             onConfirm={() => {
-              handleDeleteCartItem(id);
+              handleDeleteCartItem(index)
             }}
             okText="Yes"
             cancelText="No"
@@ -120,97 +115,109 @@ function CartPage(props) {
         </Space>
       ),
     },
-  ];
+  ]
 
   useEffect(() => {
     setData(
-      cart.map((item) => ({
-        key: item.id + item.color + item.size,
+      cart.list.map((item, index) => ({
+        key: item.id,
         product: {
           id: item.id,
           name: item.name,
-          img: item.image,
-          size: item.size,
-          color: item.color,
+          img: item.imageUrl,
         },
         price: item.price,
-        quantity: {
-          quantity: item.quantity,
+        order: {
+          index,
+          order: item.order,
           id: item.id,
-          color: item.color,
-          size: item.size,
+          quantity: item.qty,
         },
-        total: item.quantity * item.price,
-        action: item.id,
+        total: item.order * item.price,
+        action: index,
       }))
-    );
-  }, [cart]);
+    )
+  }, [cart])
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      setDisabledInput([...selectedRowKeys]);
+    onChange: (_, selectedRows) => {
       let total = selectedRows.reduce((totalNow, item) => {
-        return totalNow + item.total;
-      }, 0);
-      setTotalMoneyListOrder(total);
-      setListOrder([...selectedRows]);
+        return totalNow + item.total
+      }, 0)
+      setTotalMoneyListOrder(total)
+      const dataOrder = selectedRows.map((item) => ({
+        product_id: item?.product?.id,
+        qty: item?.order?.order,
+      }))
+      setInfoUser((pre) => ({ ...pre, listOrder: dataOrder }))
+      setListOrder(selectedRows)
     },
-  };
-
-  function updateQuantityCartItem(value, id, color, size) {
-    // dispatch(updateQuantityCart(value, id, color, size));
   }
 
-  function handleDeleteCartItem(id) {
-    // dispatch(deleteCartItem(id));
-    message.success("Delete product successfully!");
+  function updateQuantityCartItem({ order, index }) {
+    dispatch(updateCart({ index, order }))
   }
 
-  function onChangePayment(e) {
-    setPaymnet(e.target.value);
-  }
-
-  function openModalOrder() {
-    if (user.isLogin) {
-      if (listOrder.length === 0) {
-        message.warning("Please chose a product!");
-      } else {
-        setIsModalVisible(true);
-      }
-    } else {
-      message.warning("Please login!");
-    }
-  }
-
-  function onSubmitPayment(values) {
-    // dispatch(
-    //   sendListPayment({
-    //     idUser: user.id,
-    //     listPayment: listOrder,
-    //     typePayment: payment,
-    //     ...values,
-    //     address: values.address ? values.address : user.address,
-    //   })
-    // );
-    setIsModalVisible(false);
-    // dispatch(deleteListCartOrdered(listOrder));
-    setListOrder([]);
-    setTotalMoneyListOrder(0);
-    message.success("Order success!");
+  function handleDeleteCartItem(index) {
+    dispatch(deleteCart([index]))
+    message.success("Xóa sản phẩm thành công")
   }
 
   function handleTableChange(pagination) {
-    setPagination(pagination);
+    setPagination(pagination)
     window.scrollTo({
       top: 100,
       left: 100,
       behavior: "smooth",
-    });
+    })
   }
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const handleGetCode = async () => {
+    if (infoUser.email) {
+      checkoutSendOTP({ email: infoUser.email })
+      message.success("Mã code đã được gửi về mail: " + infoUser.email)
+    } else {
+      message.error("Vui lòng nhập mail và gửi lại")
+    }
+  }
+
+  const handleCheckout = async () => {
+    if (!listOrder.length) {
+      message.error("Vui lòng chọn sản phẩm")
+      return
+    }
+    const resCheckoutVerify = await checkoutVerify({
+      email: infoUser.email,
+      code: infoUser.code,
+    })
+    if (resCheckoutVerify?.data?.status === "ERROR") {
+      message.error(resCheckoutVerify?.data?.message)
+      return
+    }
+    if (resCheckoutVerify?.data?.status === "OK") {
+      localStorage.setItem(
+        "authentication_token",
+        resCheckoutVerify.data?.data?.jwt
+      )
+      const res = await placeOrder({
+        items: infoUser.listOrder,
+        customer: {
+          phone: infoUser.phone,
+          name: infoUser.name,
+          address: infoUser.address,
+        },
+      })
+      if (res.data?.status === "OK") {
+        message.success("Bạn đã đặt hàng thành công")
+        history.push("/")
+        const indexOrder = listOrder.map((item) => item?.order?.index)
+        console.log("indexOrder:", indexOrder)
+        dispatch(deleteCart(indexOrder))
+      } else {
+        res.error(resCheckoutVerify?.data?.message)
+      }
+    }
+  }
 
   return (
     <div className="cart-page mt-50">
@@ -241,119 +248,121 @@ function CartPage(props) {
                   totalMoneyListOrder={totalMoneyListOrder}
                 />
               </ul>
-              <Form onFinish={openModalOrder}>
+              <Form onFinish={handleCheckout}>
                 <Form.Item
-                  name="payment"
-                  label={t("cartPage.typePayment")}
+                  name="email"
+                  label="Email"
                   rules={[
                     {
                       required: true,
-                      message: `${t("cartPage.paymentRequired")}`,
+                      message: "Vui lòng nhập Email",
                     },
                   ]}
                 >
-                  <Radio.Group onChange={onChangePayment}>
-                    <Space direction="vertical">
-                      <Radio value={"Payment on delivery"}>
-                        {t("cartPage.chekbox1")}
-                      </Radio>
-                      <Radio value={"Payment by card"}>
-                        {t("cartPage.chekbox2")}
-                      </Radio>
-                    </Space>
-                  </Radio.Group>
+                  <Input
+                    placeholder="Nhập email"
+                    value={infoUser.value}
+                    onChange={(e) =>
+                      setInfoUser((pre) => ({ ...pre, email: e.target.value }))
+                    }
+                  />
                 </Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="btn btn--primary btn--payment"
-                >
-                  Process Order
-                </Button>
-              </Form>
-              <Modal
-                title="Your Order"
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                footer={""}
-                width={800}
-              >
-                <div className="cart-page__modal">
-                  <Row>
-                    <Col xl={6} sm={12}>
-                      <ShowBill
-                        listOrder={listOrder}
-                        totalMoneyListOrder={totalMoneyListOrder}
-                      />
-                    </Col>
-                    <Col xl={6} sm={12}>
-                      <Form labelCol={{ span: 8 }} onFinish={onSubmitPayment}>
-                        <Collapse
-                          expandIcon={() => (
-                            <i className="fas fa-map-marker-alt"></i>
-                          )}
-                          ghost={true}
-                        >
-                          <Panel header="Change address ?" key="1">
-                            <Form.Item label="Address New" name="address">
-                              <Input />
-                            </Form.Item>
-                          </Panel>
-                        </Collapse>
-                        <li className="cart-page__order__list__item">
-                          <span className="color-dark">
-                            {t("cartPage.typePayment")}:{" "}
-                          </span>
-                          <span className="color-dark">{payment}</span>
-                        </li>
-                        {payment === "Payment by card" ? (
-                          <>
-                            <h2>Information Card</h2>
-                            <Form.Item
-                              label="Number Card"
-                              name="numberCard"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: `${t(
-                                    "cartPage.paymentRequiredInput"
-                                  )}`,
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Enter your number cart" />
-                            </Form.Item>
-                            <Form.Item
-                              label="Name bank"
-                              name="nameBank"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: `${t("cartPage.bankRequiredInput")}`,
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Enter your number cart" />
-                            </Form.Item>
-                          </>
-                        ) : null}
-                        <div className="cart-page__modal__btn">
-                          <Button onClick={handleCancel} className="btn--close">
-                            Close
-                          </Button>
-                          <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="btn btn--primary btn--payment"
-                          >
-                            Submit Order
-                          </Button>
-                        </div>
-                      </Form>
-                    </Col>
-                  </Row>
+                <div className="flex justify-center mb-10">
+                  <Button
+                    type="primary"
+                    className="btn btn--primary  w-auto"
+                    onClick={handleGetCode}
+                  >
+                    Nhận mã code
+                  </Button>
                 </div>
-              </Modal>
+
+                <Form.Item
+                  name="code"
+                  label="Code"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập Code",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Nhập code"
+                    value={infoUser.code}
+                    onChange={(e) =>
+                      setInfoUser((pre) => ({ ...pre, code: e.target.value }))
+                    }
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="name"
+                  label="Tên"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập tên",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Nhập tên"
+                    value={infoUser.name}
+                    onChange={(e) =>
+                      setInfoUser((pre) => ({ ...pre, name: e.target.value }))
+                    }
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="phone"
+                  label="SDT"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập số điện thoại",
+                    },
+                  ]}
+                >
+                  <InputNumber
+                    className="w-full"
+                    placeholder="Nhập số điện thoại"
+                    value={infoUser.phone}
+                    onChange={(value) =>
+                      setInfoUser((pre) => ({ ...pre, phone: value }))
+                    }
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="address"
+                  label="Địa chỉ"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập địa chỉ",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Nhập địa chỉ"
+                    value={infoUser.address}
+                    onChange={(e) =>
+                      setInfoUser((pre) => ({
+                        ...pre,
+                        address: e.target.value,
+                      }))
+                    }
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="btn btn--primary btn--payment"
+                  >
+                    Đặt hàng
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </Col>
         </Row>
@@ -364,7 +373,7 @@ function CartPage(props) {
         </Row>
       </Container>
     </div>
-  );
+  )
 }
 
-export default CartPage;
+export default CartPage

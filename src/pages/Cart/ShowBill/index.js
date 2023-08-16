@@ -6,7 +6,9 @@ function ShowBill(props) {
     style: "currency",
     currency: "VND",
   });
-  const { listOrder, totalMoneyListOrder } = props;
+  
+  const { listOrder, totalMoneyListOrder } = props
+
   return (
     <ul className="cart-page__order__list">
       <li className="cart-page__order__list__item">
@@ -15,9 +17,14 @@ function ShowBill(props) {
       </li>
       <div className="cart-page__order__list__container">
         {listOrder.map((item, index) => (
-          <li className="cart-page__order__list__item" key={index}>
-            <span>{item?.product.name} </span>
-            <span>x {item?.quantity.quantity}</span>
+          <li
+            className="cart-page__order__list__item flex justify-between"
+            key={index}
+          >
+            <div>
+              <span>{item?.product.name} </span>
+              <span>(x {item?.order.order})</span>
+            </div>
             <span>{formatter.format(item?.total)}</span>
           </li>
         ))}
@@ -39,7 +46,7 @@ function ShowBill(props) {
         </span>
       </li>
     </ul>
-  );
+  )
 }
 
 export default ShowBill;

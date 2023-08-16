@@ -1,17 +1,17 @@
-import { Button, InputNumber, message, Modal } from "antd";
-import React, { useEffect, useState } from "react";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import { useTranslation } from "react-i18next";
+import { InputNumber, message } from "antd"
+import React, { useEffect, useState } from "react"
+import Col from "react-bootstrap/Col"
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row"
+import { useTranslation } from "react-i18next"
 import { useDispatch } from "react-redux"
 import { fetchProductDetail } from "../../apis/product"
-import ImgSizeShoe from "../../assets/images/size-shoe.jpg"
 import ProductSeen from "../../components/ProductSeen"
 import history from "../../untils/history"
 import "./style.scss"
+import { addCart } from "../../store/cart"
 
-function DetailProduct(props) {
+function DetailProduct() {
   let formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "VND",
@@ -39,20 +39,7 @@ function DetailProduct(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const data = new FormData(e.target)
-
-    // const sendData = {
-    //   id: productDetail?.id,
-    //   name: productDetail?.name,
-    //   image: productDetail?.link_img[0],
-    //   price:
-    //     productDetail?.price -
-    //     (productDetail?.price * productDetail?.discount) / 100,
-    //   ...Object.fromEntries(data),
-    //   quantity: +Object.fromEntries(data).quantity,
-    //   size: +Object.fromEntries(data).size,
-
-    // }
+    dispatch(addCart({ data: productDetail, order: quantity }))
     message.success("Add product successfully!")
   }
 
@@ -65,7 +52,7 @@ function DetailProduct(props) {
               <img
                 className="h-[500px]"
                 src={productDetail?.imageUrl}
-                placeholder={productDetail?.name}
+                alt={productDetail?.name}
               />
             </Col>
             <Col xl={5} sm={12}>
@@ -129,4 +116,4 @@ function DetailProduct(props) {
   )
 }
 
-export default DetailProduct;
+export default DetailProduct

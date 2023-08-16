@@ -1,51 +1,38 @@
-import React from "react";
-import "./style.scss";
-import { useTranslation } from "react-i18next";
-import history from "../../untils/history";
-import ShowStar from "./../ShowStar";
-import { useDispatch } from "react-redux";
-// import { addCartItem } from "../../actions/user";
-import { message } from "antd";
-// import { getIdProduct } from "../../actions/product";
+import React from "react"
+import { useTranslation } from "react-i18next"
+import { useDispatch } from "react-redux"
+import history from "../../untils/history"
+import "./style.scss"
+import { message } from "antd"
+import { addCart } from "../../store/cart"
 
 function ProductItem(props) {
-  const { data } = props;
-  const dispatch = useDispatch();
+  const { data } = props
+  const dispatch = useDispatch()
   let formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "VND",
-  });
-  const { t } = useTranslation();
+  })
+  const { t } = useTranslation()
 
   const goToPageDetail = () => {
-    // dispatch(getIdProduct(data?.id));
-    history.push("/products/" + data?.id);
-    let productsSeen = JSON.parse(sessionStorage.getItem("products_seen"));
+    history.push("/products/" + data?.id)
+    let productsSeen = JSON.parse(sessionStorage.getItem("products_seen"))
     if (productsSeen) {
-      const index = productsSeen.findIndex((item) => item.id === data?.id);
-      index === -1 && productsSeen.push(data);
+      const index = productsSeen.findIndex((item) => item.id === data?.id)
+      index === -1 && productsSeen.push(data)
     } else {
-      productsSeen = [];
-      productsSeen.push(data);
+      productsSeen = []
+      productsSeen.push(data)
     }
-    sessionStorage.setItem("products_seen", JSON.stringify(productsSeen));
-  };
+    sessionStorage.setItem("products_seen", JSON.stringify(productsSeen))
+  }
 
   const handleAddToCart = (e) => {
-    e.stopPropagation();
-    // dispatch(
-    //   addCartItem({
-    //     id: data?.id,
-    //     name: data?.name,
-    //     image: data?.link_img[0],
-    //     price: data?.price - (data?.price * data?.discount) / 100,
-    //     color: data?.color[0],
-    //     quantity: 1,
-    //     size: data?.size[0],
-    //   })
-    // );
-    message.success("Add product to cart successfully!");
-  };
+    e.stopPropagation()
+    dispatch(addCart({ data, order: 1 }))
+    message.success("Add product to cart successfully!")
+  }
 
   return (
     <div onClick={goToPageDetail} className="product-item">
@@ -66,9 +53,7 @@ function ProductItem(props) {
               <i className="fas fa-cart-plus"></i>
               <span className="hover-text">{t("button.addtocart")}</span>
             </span>
-            <span
-              className=" social-info social-info--sm"
-            >
+            <span className=" social-info social-info--sm">
               <i className="fas fa-arrows-alt"></i>
               <span onClick={goToPageDetail} className="hover-text">
                 {t("button.viewmore")}
@@ -81,4 +66,4 @@ function ProductItem(props) {
   )
 }
 
-export default ProductItem;
+export default ProductItem

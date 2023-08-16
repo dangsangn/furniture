@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
+import cart from "./cart"
 
 export const store = configureStore({
   reducer: {
     user: {},
-    cart: {},
+    cart,
     products: {},
     ui: {},
     category: {},
