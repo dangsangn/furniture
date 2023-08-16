@@ -43,6 +43,7 @@ function CartPage() {
     address: "",
     listOrder: [],
   })
+  const [loading, setLoading] = useState(false)
 
   const columns = [
     {
@@ -182,40 +183,47 @@ function CartPage() {
   }
 
   const handleCheckout = async () => {
-    if (!listOrder.length) {
-      message.error("Vui lòng chọn sản phẩm")
-      return
-    }
-    const resCheckoutVerify = await checkoutVerify({
-      email: infoUser.email,
-      code: infoUser.code,
-    })
-    if (resCheckoutVerify?.data?.status === "ERROR") {
-      message.error(resCheckoutVerify?.data?.message)
-      return
-    }
-    if (resCheckoutVerify?.data?.status === "OK") {
-      localStorage.setItem(
-        "authentication_token",
-        resCheckoutVerify.data?.data?.jwt
-      )
-      const res = await placeOrder({
-        items: infoUser.listOrder,
-        customer: {
-          phone: infoUser.phone,
-          name: infoUser.name,
-          address: infoUser.address,
-        },
-      })
-      if (res.data?.status === "OK") {
-        message.success("Bạn đã đặt hàng thành công")
-        history.push("/")
-        const indexOrder = listOrder.map((item) => item?.order?.index)
-        console.log("indexOrder:", indexOrder)
-        dispatch(deleteCart(indexOrder))
-      } else {
-        res.error(resCheckoutVerify?.data?.message)
+    try {
+      setLoading(true)
+      if (!listOrder.length) {
+        message.error("Vui lòng chọn sản phẩm")
+        return
       }
+      const resCheckoutVerify = await checkoutVerify({
+        email: infoUser.email,
+        code: infoUser.code,
+      })
+      if (resCheckoutVerify?.data?.status === "ERROR") {
+        message.error(resCheckoutVerify?.data?.message)
+        return
+      }
+      if (resCheckoutVerify?.data?.status === "OK") {
+        localStorage.setItem(
+          "authentication_token",
+          resCheckoutVerify.data?.data?.jwt
+        )
+        const res = await placeOrder({
+          items: infoUser.listOrder,
+          customer: {
+            phone: infoUser.phone,
+            name: infoUser.name,
+            address: infoUser.address,
+          },
+        })
+        if (res.data?.status === "OK") {
+          message.success("Bạn đã đặt hàng thành công")
+          history.push("/")
+          const indexOrder = listOrder.map((item) => item?.order?.index)
+          console.log("indexOrder:", indexOrder)
+          dispatch(deleteCart(indexOrder))
+        } else {
+          res.error(resCheckoutVerify?.data?.message)
+        }
+      }
+    } catch (error) {
+      console.log("error:", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -358,6 +366,7 @@ function CartPage() {
                     type="primary"
                     htmlType="submit"
                     className="btn btn--primary btn--payment"
+                    disabled={loading}
                   >
                     Đặt hàng
                   </Button>

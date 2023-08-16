@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import { useTranslation } from "react-i18next"
-import { Link, useHistory, useLocation } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import "swiper/components/navigation/navigation.min.css"
 import "swiper/components/pagination/pagination.min.css"
 import "swiper/swiper.min.css"
@@ -58,8 +58,15 @@ function HomePage() {
   }, [query])
 
   const onChange = (page) => {
-    console.log(page)
     history.push(`?page=${page}`)
+  }
+
+  const handleSelectCategory = (id) => {
+    if (+query?.category === +id) {
+      history.push("/")
+    } else {
+      history.push(`?category=${id}`)
+    }
   }
 
   return (
@@ -73,13 +80,15 @@ function HomePage() {
             {category.map((item, index) => {
               return (
                 <Col xl={3} sm={12} key={index}>
-                  <Link
-                    to={`?category=${item.id}`}
-                    className="block px-10 py-6 text-center border-2 border-solid border-transparent hover:border-orange-300"
+                  <div
+                    onClick={() => handleSelectCategory(item?.id)}
+                    className={`cursor-pointer block px-10 py-6 text-center border-2 border-solid border-transparent hover:border-orange-200 ${
+                      +query?.category === +item.id && "border-orange-300"
+                    }`}
                   >
                     <h3 className="text-3xl">{t(item.name)}</h3>
                     <p className="text-gray-400">{t(item.description)}</p>
-                  </Link>
+                  </div>
                 </Col>
               )
             })}
